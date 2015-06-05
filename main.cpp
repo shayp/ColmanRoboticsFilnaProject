@@ -1,7 +1,7 @@
 #include <iostream>
-#include "Manager.h"
-#include "Robot.h"
-#include "Plans/PlnObstacleAvoid.h"
+#include "Src/RobotAPI/Manager.h"
+#include "Src/RobotAPI/Robot.h"
+#include "Src/Plans/PlnObstacleAvoid.h"
 
 using namespace std;
 
