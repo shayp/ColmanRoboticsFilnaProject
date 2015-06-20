@@ -14,6 +14,7 @@ Map* MapUtils::pngToMap(string pngMapPath, float pixelsPerGridResolution)
 	vector<unsigned char> rawImage;
 	unsigned widthInPixels, heightInPixels;
 
+	cout << "Trying to decode the map" << endl;
 	unsigned error = lodepng::decode(rawImage, widthInPixels, heightInPixels, pngMapPath.c_str());
 
 	if (error)

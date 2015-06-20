@@ -80,6 +80,8 @@ void PngUtils::blowMap(string mapFilename, int numPixelsToBlow, string blowMapFi
 		}
 	}
 
+	cout << blowMapFilename << endl;
+
 	unsigned encodeError = lodepng::encode(blowMapFilename, blowImage, width, height);
 	if (encodeError)
 	{

@@ -46,7 +46,7 @@ std::vector<unsigned char> LoadBmpMap(const char* filename, unsigned  width, uns
 		//if there's an error, display it
 		if (error)
 			std::cout << "decoder error " << error << ": "
-					<< lodepng_error_text(error) << std::endl;
+					<< lodepng_error_text(error) << filename << std::endl;
 
 		return image;
 }

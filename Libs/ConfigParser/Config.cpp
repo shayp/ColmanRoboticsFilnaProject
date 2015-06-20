@@ -7,6 +7,9 @@ using namespace std;
 
 #include "Log.h"
 
+Config::Config(string name, string parentDebugInfo) {
+	debugInfo = parentDebugInfo + ", " + name;
+}
 
 Config::Config(const char* configFile, char** envp) {
 /*	while (*envp) {
@@ -21,13 +24,14 @@ Config::Config(const char* configFile, char** envp) {
 		++envp;
 	}*/
 
+	debugInfo = configFile;
+	groupStack.push_front(this);
+
 	FILE* in = fopen(configFile, "r");
-	if (!in)
-	{
+	if (!in) {
 		cerr << "cannot open input file '" << configFile << "'" << endl;
 		exit(2);
 	}
-	cout << "/nFile Open" << endl;
 
 	char buff[1024];
 	while (fgets(buff, 1024, in)) {
@@ -39,19 +43,21 @@ Config::Config(const char* configFile, char** envp) {
 			split(line, name, value, '=');
 
 			if (value == "(") {
-				logDebug(cout << "   config: new group '" << name << "'" << endl);
-
+				cout << "   config: new group '" << name << "'" << endl;
+				Config* newGroup = new Config(name, debugInfo);
+				groupStack.front()->groups[name] = newGroup;
+				groupStack.push_front(newGroup);
 			} else {
 				for (list<Config*>::reverse_iterator i = groupStack.rbegin(); i != groupStack.rend(); ++i) {
 					(*i)->symbolExpand(value);
 				}
 				envSymbolExpand(value);
-				logDebug(cout << "   config: name = '" << name << "', value = '" << value << "'" << endl);
+				cout << "   config: name = '" << name << "', value = '" << value << "'" << endl;
 				groupStack.front()->add(name, value);
 			}
 		}
 		if ( (line.length() > 0) && (line[0] != '#') && (line.find(')') != string::npos) ) {
-			logDebug(cout << "   end of group" << endl);
+			cout << "   end of group" << endl;
 			groupStack.pop_front();
 		}
 	}
@@ -133,7 +139,7 @@ void Config::symbolExpand(map<string, string>& symbols, string& s) {
 string Config::pString(string name) {
 	map<string, string>::iterator i = symbols.find(name);
 	if (i == symbols.end()) {
-		logError(cout << "access of missing property '" << name << "' (" << debugInfo << ")" << endl);
+		cout << "access of missing property '" << name << "' (" << debugInfo << ")" << endl;
 		exit(4);
 	}
 	return i->second;
