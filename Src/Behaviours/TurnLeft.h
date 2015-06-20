@@ -14,7 +14,7 @@ public:
 	bool stopCond();
 	void action();
 	virtual ~TurnLeft();
-	static const float TURN_SPEED = 0.5;
+	static constexpr float TURN_SPEED = 0.5;
 };
 
 #endif /* TurnLeft_H_ */

@@ -1,3 +1,5 @@
+#ifndef CELL_H
+#define CELL_H
 #include <iostream>
 #include <vector>
 #include "Location.h"
@@ -14,7 +16,7 @@ namespace CoreLib
 			#define COST_OBSTICALE 		DBL_MAX
 			#define COST_FREE_TO_GO 	1
 			#define COST_NEAR_WALL		3
-			#define NUM_OF_NEIGHBORS;
+			#define NUM_OF_NEIGHBORS	8
 
 			double Cost;
 
@@ -36,3 +38,4 @@ namespace CoreLib
 
 	};
 }
+#endif

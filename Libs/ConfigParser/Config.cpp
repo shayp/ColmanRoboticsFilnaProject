@@ -7,11 +7,8 @@ using namespace std;
 
 #include "Log.h"
 
-Config::Config(string name, string parentDebugInfo) {
-	debugInfo = parentDebugInfo + ", " + name;
-}
 
-Config::Config(string configFile, char** envp) {
+Config::Config(const char* configFile, char** envp) {
 /*	while (*envp) {
 		string envEntry = *envp;
 		size_t pos = envEntry.find('=');
@@ -24,14 +21,13 @@ Config::Config(string configFile, char** envp) {
 		++envp;
 	}*/
 
-	debugInfo = configFile;
-	groupStack.push_front(this);
-
-	FILE* in = fopen(configFile.c_str(), "r");
-	if (!in) {
+	FILE* in = fopen(configFile, "r");
+	if (!in)
+	{
 		cerr << "cannot open input file '" << configFile << "'" << endl;
 		exit(2);
 	}
+	cout << "/nFile Open" << endl;
 
 	char buff[1024];
 	while (fgets(buff, 1024, in)) {
@@ -44,9 +40,7 @@ Config::Config(string configFile, char** envp) {
 
 			if (value == "(") {
 				logDebug(cout << "   config: new group '" << name << "'" << endl);
-				Config* newGroup = new Config(name, debugInfo);
-				groupStack.front()->groups[name] = newGroup;
-				groupStack.push_front(newGroup);
+
 			} else {
 				for (list<Config*>::reverse_iterator i = groupStack.rbegin(); i != groupStack.rend(); ++i) {
 					(*i)->symbolExpand(value);

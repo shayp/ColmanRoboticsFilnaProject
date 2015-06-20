@@ -1,3 +1,5 @@
+#ifndef LOCATION_H
+#define LOCATION_H
 namespace CoreLib
 {
 	struct RobotLocation
@@ -13,4 +15,5 @@ namespace CoreLib
 			double Y;
 	};
 }
+#endif
 

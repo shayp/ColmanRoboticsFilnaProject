@@ -9,14 +9,14 @@ class Helper
 {
 
 public:
-	static const float MINIMUM_WALL_RANGE_SIDES = 0.6;
-	static const float MINIMUM_WALL_RANGE_FORWARD = 1;
-	static const float MINIMUM_WALL_RANGE = 0.8;
-	static const float TOTAL_SCAN_SPAN = SCAN_SPAN;
-	static const float HALF_SCAN_SPAN = SCAN_SPAN / 2;
-	static const float TOTAL_DEGREES = DEGREES;
+	static constexpr float MINIMUM_WALL_RANGE_SIDES = 0.6;
+	static constexpr float MINIMUM_WALL_RANGE_FORWARD = 1;
+	static constexpr float MINIMUM_WALL_RANGE = 0.8;
+	static constexpr float TOTAL_SCAN_SPAN = SCAN_SPAN;
+	static constexpr float HALF_SCAN_SPAN = SCAN_SPAN / 2;
+	static constexpr float TOTAL_DEGREES = DEGREES;
 
-	static const float DEGREES_INDEX_RATIO = SCAN_SPAN / DEGREES;
+	static constexpr float DEGREES_INDEX_RATIO = SCAN_SPAN / DEGREES;
 
 	static const int FREE_CELL = 0;
 	static const int OCCUPIED_CELL = 1;

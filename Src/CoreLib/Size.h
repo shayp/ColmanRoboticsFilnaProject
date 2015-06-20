@@ -1,3 +1,6 @@
+#ifndef SIZE_H
+#define SIZE_H
+
 namespace CoreLib
 {
 	struct Size
@@ -7,3 +10,5 @@ namespace CoreLib
 	};
 
 }
+
+#endif

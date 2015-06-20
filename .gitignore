@@ -1,5 +1,6 @@
 .project
 .metadata
+Debug/**
 bin/**
 tmp/**
 tmp/**/*
