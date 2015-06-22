@@ -26,7 +26,7 @@ namespace CoreLib
 			Cell* getCell(int row, int col) const;
 
 			Cell* operator()(int row, int col) const;
-
+			void printMap();
 		protected:
 			unsigned m_Rows;
 			unsigned m_Cols;

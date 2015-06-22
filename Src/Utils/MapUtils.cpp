@@ -15,6 +15,7 @@ Map* MapUtils::pngToMap(string pngMapPath, float pixelsPerGridResolution)
 	unsigned widthInPixels, heightInPixels;
 
 	cout << "Trying to decode the map" << endl;
+
 	unsigned error = lodepng::decode(rawImage, widthInPixels, heightInPixels, pngMapPath.c_str());
 
 	if (error)
@@ -29,30 +30,35 @@ Map* MapUtils::pngToMap(string pngMapPath, float pixelsPerGridResolution)
 	return map;
 }
 
-void MapUtils::mapToPng(const Map& map, float pixelsPerGridResolution, string pngMapPath)
+void MapUtils::mapToPng(Map* map, float pixelsPerGridResolution, string pngMapPath)
 {
 	vector<unsigned char> rawImage;
-	unsigned width = (unsigned)floor(map.getCols() * pixelsPerGridResolution);
-	unsigned height = (unsigned)floor(map.getRows() * pixelsPerGridResolution);
+	unsigned width = (unsigned)floor(map->getCols() * pixelsPerGridResolution);
+	unsigned height = (unsigned)floor(map->getRows() * pixelsPerGridResolution);
 	rawImage.resize(width * height * 4);
 
 	int flooredResolution = (int)floor(pixelsPerGridResolution);
 
-	for (unsigned row = 0; row < map.getRows(); row++)
+	cout << "The Matrix size" << width * height * 4 << endl;
+	for (unsigned row = 0; row < map->getRows(); row++)
 	{
-		for (unsigned col = 0; col < map.getCols(); col++)
+		for (unsigned col = 0; col < map->getCols(); col++)
 		{
-			Cell* cell = map.getCell(row, col);
+			Cell* cell = map->getCell(row, col);
 			unsigned char rPixel, gPixel, bPixel;
 			unsigned char aPixel = 255;
 
-			if (cell->isCellWalkable())
+			if (cell->Cost == COST_FREE_TO_GO)
 			{
 				rPixel = gPixel = bPixel = IMAGE_COLOR_CLEAR;
 			}
-			else
+			else if (cell->Cost == COST_OBSTICALE )
 			{
 				rPixel = gPixel = bPixel = IMAGE_COLOR_OBSTACLE;
+			}
+			else if(cell->Cost == COST_NEAR_WALL)
+			{
+				rPixel = gPixel = bPixel = IMAGE_COLOR_NEAR_WALL;
 			}
 
 			int basePos = (row * width + col) * 4 * flooredResolution;
@@ -61,6 +67,8 @@ void MapUtils::mapToPng(const Map& map, float pixelsPerGridResolution, string pn
 				for (int j = 0; j < flooredResolution; j++)
 				{
 					int offset = (i * width + j) * 4;
+
+					//cout << "Pixel offset: " << basePos << " Pixel Color:" << rPixel << endl;
 					rawImage[basePos + offset + 0] = rPixel;
 					rawImage[basePos + offset + 1] = gPixel;
 					rawImage[basePos + offset + 2] = bPixel;
@@ -71,6 +79,7 @@ void MapUtils::mapToPng(const Map& map, float pixelsPerGridResolution, string pn
 	}
 
 	unsigned error = lodepng::encode(pngMapPath, rawImage, width, height);
+
 	if (error)
 	{
 		cout << "decoder error " << error << ": " << lodepng_error_text(error) << endl;

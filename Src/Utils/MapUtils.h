@@ -10,6 +10,7 @@ using namespace std;
 using namespace CoreLib;
 
 #define IMAGE_COLOR_CLEAR 255 // WHITE
+#define IMAGE_COLOR_NEAR_WALL 128
 #define IMAGE_COLOR_OBSTACLE 0 // BLACK
 
 namespace Utils
@@ -18,7 +19,7 @@ namespace Utils
 	{
 		public:
 			static Map* pngToMap(string pngMapPath, float pixelsPerGridResolution);
-			static void mapToPng(const Map& map, float pixelsPerGridResolution, string pngMapPath);
+			static void mapToPng(Map* map, float pixelsPerGridResolution, string pngMapPath);
 			static Map* blowUpMap(const Map& map, float robotMaxDimensionCm, float resolution);
 			static void addMapWeights(Map* map);
 

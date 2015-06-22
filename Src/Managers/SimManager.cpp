@@ -51,4 +51,10 @@ void SimManager::BuildMap()
 
 	// Allow Smooth paths
 	MapUtils::addMapWeights(m_BlownMap);
+
+	string mapWithWeight = string(blowMapFilename).insert(indexOfMapExt, "_weight");
+
+	// Save map with weights
+	MapUtils::mapToPng(m_BlownMap, pixelsPerOneGrid, mapWithWeight);
+
 }

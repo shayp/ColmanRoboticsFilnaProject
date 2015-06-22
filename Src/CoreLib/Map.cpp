@@ -134,5 +134,15 @@ bool Map::isInRange(int row, int col) const
 	return ((row >= 0 && row < (int)m_Rows) &&
 			(col >= 0 && col < (int)m_Cols));
 }
-
+void Map::printMap()
+{
+	for (unsigned row = 0; row < m_Rows; row++)
+	{
+		for (unsigned col = 0; col < m_Cols; col++)
+		{
+			cout << getCell(row, col)->Cost << ", ";
+		}
+		cout << endl;
+	}
+}
 
