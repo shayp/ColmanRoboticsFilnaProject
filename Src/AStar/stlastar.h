@@ -34,9 +34,10 @@ given where due.
 #include <set>
 #include <vector>
 #include <cfloat>
+#include "../CoreLib/Map.h"
 
 using namespace std;
-
+using namespace CoreLib;
 // fast fixed size memory allocator, used for fast node memory management
 #include "fsa.h"
 
@@ -145,7 +146,7 @@ public: // methods
 	}
 
 	// Set Start and goal states
-	void SetStartAndGoalStates( UserState &Start, UserState &Goal )
+	void SetStartAndGoalStates( UserState Start, UserState Goal )
 	{
 		m_CancelRequest = false;
 
@@ -179,7 +180,7 @@ public: // methods
 	}
 
 	// Advances search one step
-	unsigned int SearchStep()
+	unsigned int SearchStep(Map* map)
 	{
 		// Firstly break if the user has not initialised the search
 		assert( (m_State > SEARCH_STATE_NOT_INITIALISED) &&
@@ -259,7 +260,7 @@ public: // methods
 
 			// User provides this functions and uses AddSuccessor to add each successor of
 			// node 'n' to m_Successors
-			bool ret = n->m_UserState.GetSuccessors( this, n->parent ? &n->parent->m_UserState : NULL );
+			bool ret = n->m_UserState.GetSuccessors( this, n->parent ? &n->parent->m_UserState : NULL, map);
 
 			if( !ret )
 			{
@@ -286,7 +287,7 @@ public: // methods
 			{
 
 				// 	The g value for this successor ...
-				float newg = n->g + n->m_UserState.GetCost( (*successor)->m_UserState );
+				float newg = n->g + n->m_UserState.GetCost( (*successor)->m_UserState, map);
 
 				// Now we need to find whether the node is on the open or closed lists
 				// If it is but the node that is already on them is better (lower g)
@@ -401,7 +402,7 @@ public: // methods
 
 	// User calls this to add a successor to a list of successors
 	// when expanding the search frontier
-	bool AddSuccessor( UserState &State )
+	bool AddSuccessor( UserState& State )
 	{
 		Node *node = AllocateNode();
 

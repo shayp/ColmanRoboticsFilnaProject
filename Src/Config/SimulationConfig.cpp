@@ -14,7 +14,6 @@ namespace config
 	{
 		Config configParser = Config(cfgFilePath);
 
-		// TODO Move entry names to Conf.h
 		m_PngMapPath = configParser.pString(CFG_FILE_PATH);
 		m_StartLocation.X = configParser.pDouble(CFG_START_LOCATION_X_CM);
 		m_StartLocation.Y = configParser.pDouble(CFG_START_LOCATION_Y_CM);

@@ -28,11 +28,7 @@ void SimManager::run()
 }
 void SimManager::BuildMap()
 {
-
-
 	string mapFilename = m_Config->getPngMapPath();
-
-	cout << "Get Map Path:" << mapFilename <<  endl;
 
 	// Create map
 	float pixelsPerOneGrid = m_Config->getGridResolution() / m_Config->getPixelResolution();

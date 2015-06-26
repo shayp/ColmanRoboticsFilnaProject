@@ -86,7 +86,6 @@ void MapUtils::mapToPng(Map* map, float pixelsPerGridResolution, string pngMapPa
 	}
 }
 
-// TODO (reut): fix the resolution or send the correct one if this function is ever used
 Map* MapUtils::blowUpMap(const Map& map, float robotMaxDimensionCm, float resolution)
 {
 	Map* blownMap = new Map(map);
@@ -153,7 +152,6 @@ void MapUtils::initMapFromImage(Map* map, vector<unsigned char>& rawImage, unsig
 			}
 			else if (cellColor == IMAGE_COLOR_CLEAR)
 			{
-				// TODO: Add cost so that the closer you get to a wall the higher the cost, and vice-versa?
 				cell->Cost = COST_FREE_TO_GO;
 			}
 		}
