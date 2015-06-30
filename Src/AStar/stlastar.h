@@ -160,6 +160,7 @@ public: // methods
 
 		m_State = SEARCH_STATE_SEARCHING;
 
+		cout << "Start Search" << endl;
 		// Initialise the AStar specific parts of the Start Node
 		// The user only needs fill out the state information
 
@@ -182,6 +183,7 @@ public: // methods
 	// Advances search one step
 	unsigned int SearchStep(Map* map)
 	{
+		//cout << "Search step: " << m_State << endl;
 		// Firstly break if the user has not initialised the search
 		assert( (m_State > SEARCH_STATE_NOT_INITIALISED) &&
 				(m_State < SEARCH_STATE_INVALID) );
@@ -201,6 +203,7 @@ public: // methods
 		{
 			FreeAllNodes();
 			m_State = SEARCH_STATE_FAILED;
+			cout << "open list is empty:(" << endl;
 			return m_State;
 		}
 

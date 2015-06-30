@@ -1,5 +1,6 @@
 #include "SimManager.h"
 #include <math.h>
+#include "../AStar/FindPath.h"
 using namespace Utils;
 
 SimManager::SimManager(const char* cfgFilePath)
@@ -25,6 +26,20 @@ SimManager::~SimManager()
 void SimManager::run()
 {
 	BuildMap();
+
+	vector<Cell*> WayPoints = RunAStar();
+
+	string mapFilename = m_Config->getPngMapPath();
+
+	// Create map
+	float pixelsPerOneGrid = m_Config->getGridResolution() / m_Config->getPixelResolution();
+
+	int indexOfMapExt = mapFilename.find_last_of(".");
+	string WayPointsMapFilename = string(mapFilename).insert(indexOfMapExt, "_waypoints");
+
+	// Save map with weights and waypoints
+	MapUtils::mapToPng(m_BlownMap, pixelsPerOneGrid, WayPointsMapFilename);
+
 }
 void SimManager::BuildMap()
 {
@@ -54,3 +69,13 @@ void SimManager::BuildMap()
 	MapUtils::mapToPng(m_BlownMap, pixelsPerOneGrid, mapWithWeight);
 
 }
+
+vector<Cell*> SimManager::RunAStar()
+{
+	FindPath* pathFinder = new FindPath(m_BlownMap);
+	Cell* StartLocation = new Cell(m_Config->getRobotStartLocation().X, m_Config->getRobotStartLocation().Y);
+	Cell* EndLocation = new Cell(m_Config->getRobotEndLocation().X, m_Config->getRobotEndLocation().Y);
+	return pathFinder->search(StartLocation, EndLocation);
+
+}
+

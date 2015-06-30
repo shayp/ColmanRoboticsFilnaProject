@@ -29,7 +29,8 @@ namespace Utils
 			static void initMapFromImage(Map* map, vector<unsigned char>& rawImage, unsigned imageWidthPx,
 										 unsigned imageHeightPx, unsigned pixelsPerOneGrid);
 
-			static bool isCellNearWall(Cell* cell);
+			static unsigned GetNumOfWallNeighbours(Cell* cell);
+			static void SetSecondLevel(Cell* cell);
 	};
 }
 #endif MAP_UTILS_H

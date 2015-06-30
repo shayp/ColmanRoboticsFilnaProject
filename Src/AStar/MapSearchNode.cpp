@@ -7,7 +7,6 @@ MapSearchNode::~MapSearchNode()
 }
 bool MapSearchNode::IsSameState( MapSearchNode &rhs )
 {
-
 	// same state in a maze search is simply when (x,y) are the same
 	if( (x == rhs.x) &&
 		(y == rhs.y) )

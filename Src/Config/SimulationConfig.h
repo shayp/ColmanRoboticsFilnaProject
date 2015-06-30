@@ -4,6 +4,7 @@
 #include <string>
 #include "../CoreLib/Size.h"
 #include "../CoreLib/Location.h"
+#include "../CoreLib/Cell.h"
 
 using namespace std;
 using namespace CoreLib;

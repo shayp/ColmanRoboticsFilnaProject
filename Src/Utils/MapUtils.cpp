@@ -40,6 +40,7 @@ void MapUtils::mapToPng(Map* map, float pixelsPerGridResolution, string pngMapPa
 	int flooredResolution = (int)floor(pixelsPerGridResolution);
 
 	cout << "The Matrix size" << width * height * 4 << endl;
+	cout << "Rows: " << map->getRows() << "Cols: " << map->getCols() << endl;
 	for (unsigned row = 0; row < map->getRows(); row++)
 	{
 		for (unsigned col = 0; col < map->getCols(); col++)
@@ -54,11 +55,41 @@ void MapUtils::mapToPng(Map* map, float pixelsPerGridResolution, string pngMapPa
 			}
 			else if (cell->Cost == COST_OBSTICALE )
 			{
+				// Black color
 				rPixel = gPixel = bPixel = IMAGE_COLOR_OBSTACLE;
 			}
 			else if(cell->Cost == COST_NEAR_WALL)
 			{
+				// Gray color
 				rPixel = gPixel = bPixel = IMAGE_COLOR_NEAR_WALL;
+			}
+			else if(cell->Cost == COST_NEAR_WALL_SECOND)
+			{
+				// Red color, close to wall
+				rPixel = 201;
+				gPixel = 14;
+				bPixel = 14;
+			}
+			else if(cell->Cost == COST_NEAR_WALL_THIRD)
+			{
+				// Orange, close to wall less walls
+				rPixel = 236;
+				gPixel = 119;
+				bPixel = 41;
+			}
+			else if(cell->Cost == COST_SECOND_LEVEL)
+			{
+				// Yellow, close to near walls
+				rPixel = 201;
+				gPixel = 201;
+				bPixel = 14;
+			}
+
+			if(cell->IsWayPoint())
+			{
+				rPixel = 15;
+				gPixel = 192;
+				bPixel = 202;
 			}
 
 			int basePos = (row * width + col) * 4 * flooredResolution;
@@ -68,7 +99,6 @@ void MapUtils::mapToPng(Map* map, float pixelsPerGridResolution, string pngMapPa
 				{
 					int offset = (i * width + j) * 4;
 
-					//cout << "Pixel offset: " << basePos << " Pixel Color:" << rPixel << endl;
 					rawImage[basePos + offset + 0] = rPixel;
 					rawImage[basePos + offset + 1] = gPixel;
 					rawImage[basePos + offset + 2] = bPixel;
@@ -160,28 +190,65 @@ void MapUtils::initMapFromImage(Map* map, vector<unsigned char>& rawImage, unsig
 
 void MapUtils::addMapWeights(Map* map)
 {
+	unsigned counter  = 0;
 	for (unsigned row = 0; row < map->getRows(); row++)
 	{
 		for (unsigned col = 0; col < map->getCols(); col++)
 		{
 			Cell* cell = (*map)(row, col);
-			if (cell->isCellWalkable() && isCellNearWall(cell))
+			if (cell->isCellWalkable() )
 			{
-				cell->Cost = COST_NEAR_WALL;
+				counter = GetNumOfWallNeighbours(cell);
+				if (counter >= 1 && counter <= 3)
+				{
+					cell->Cost = COST_NEAR_WALL_THIRD;
+
+				}
+				else if (counter >= 4 && counter <= 6)
+				{
+					cell->Cost = COST_NEAR_WALL_SECOND;
+				}
+				else if (counter > 6)
+				{
+					cell->Cost = COST_NEAR_WALL;
+				}
 			}
+		}
+	}
+
+	for (unsigned row = 0; row < map->getRows(); row++)
+	{
+		for (unsigned col = 0; col < map->getCols(); col++)
+		{
+			Cell* cell = (*map)(row, col);
+			SetSecondLevel(cell);
 		}
 	}
 }
 
-bool MapUtils::isCellNearWall(Cell* cell)
+unsigned MapUtils::GetNumOfWallNeighbours(Cell* cell)
 {
+	unsigned counter = 0;
 	for (Cell* neighborCell : cell->getNeighbors())
 	{
 		if (neighborCell != NULL && !neighborCell->isCellWalkable())
 		{
-			return true;
+			counter++;
 		}
 	}
 
-	return false;
+	return counter;
+}
+
+void MapUtils::SetSecondLevel(Cell* cell)
+{
+	for (Cell* neighborCell : cell->getNeighbors())
+	{
+		if (neighborCell != NULL &&
+			cell->Cost == COST_FREE_TO_GO
+			&& neighborCell->Cost > COST_SECOND_LEVEL)
+		{
+			cell->Cost = COST_SECOND_LEVEL;
+		}
+	}
 }

@@ -22,6 +22,7 @@ class SimManager
 		Map* m_BlownMap;
 
 		void BuildMap();
+		vector<Cell*> RunAStar();
 };
 
 #endif SIM_MANAGER_H

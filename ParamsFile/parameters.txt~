@@ -1,6 +1,10 @@
-map: ~/Desktop/roboticLabMap.png
-startLocation: 362 305 20
-goal: 169 138
-robotSize: 30 30
-MapResolutionCM: 2.5
-GridResolutionCM: 10
+pngFile = ~/projects/Robotics/FinalProject/FinalProject/ParamsFile/roboticLabMap.png
+robotWidthCM = 30
+robotHeightCM = 30
+PixelResolutionCM = 2.5
+gridResolutionCM = 10
+robotLocationXCM = 40
+robotLocationYCM = 40
+robotLocationYawDeg = 20
+endLocationXCM = 50
+endLocationYCM = 50

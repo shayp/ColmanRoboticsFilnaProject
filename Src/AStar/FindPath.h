@@ -18,6 +18,8 @@ public:
 private:
 	Map* m_Map;
 	AStarSearch<MapSearchNode> m_AStarSearch;
+	vector<MapSearchNode*> GetSolution();
+	Cell* WayPointnodeToCell(MapSearchNode* node);
 
 };
 #endif
