@@ -1,6 +1,10 @@
 #include "FindPath.h"
 #include "MapSearchNode.h"
 #include <vector>
+#include "../Config/Config.h"
+
+using namespace CoreLib;
+
 FindPath::FindPath(Map* map) : m_Map(map)
 {
 }
@@ -70,6 +74,6 @@ vector<MapSearchNode*> FindPath::GetSolution()
 
 Cell* FindPath::WayPointnodeToCell(MapSearchNode* node)
 {
-	m_Map->getCell(node->x, node->y)->SetAsWayPoint();
+	m_Map->getCell(node->x, node->y)->SetAsWayPoint((unsigned int)eAStarWayPoint);
 	return m_Map->getCell(node->x, node->y);
 }

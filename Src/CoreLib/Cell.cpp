@@ -7,7 +7,7 @@ Cell::Cell(unsigned x, unsigned y, double cost)
 	m_loc.X = x;
 	m_loc.Y = y;
 	Cost = cost;
-	m_fIsWayPoint = false;
+	m_wayPointType = eNotWayPoint;
 }
 
 Cell::Cell(const Cell& cell)
@@ -15,7 +15,7 @@ Cell::Cell(const Cell& cell)
 	m_Neighbors = cell.m_Neighbors;
 	m_loc = cell.m_loc;
 	Cost = cell.Cost;
-	m_fIsWayPoint = false;
+	m_wayPointType = eNotWayPoint;
 }
 
 
@@ -24,11 +24,11 @@ bool Cell::isCellWalkable()
 	return (Cost != COST_OBSTICALE);
 }
 
-bool Cell::IsWayPoint()
+unsigned Cell::GetWayPointType()
 {
-	return m_fIsWayPoint;
+	return m_wayPointType;
 }
-void Cell::SetAsWayPoint()
+void Cell::SetAsWayPoint(unsigned wayPointType)
 {
-	m_fIsWayPoint = true;
+	m_wayPointType = wayPointType;
 }

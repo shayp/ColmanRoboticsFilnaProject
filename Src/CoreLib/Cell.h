@@ -1,5 +1,6 @@
 #ifndef CELL_H
 #define CELL_H
+#include "../Config/Config.h"
 #include <iostream>
 #include <vector>
 #include "Location.h"
@@ -31,15 +32,15 @@ namespace CoreLib
 			vector<Cell*> getNeighbors() { return m_Neighbors; }
 			unsigned getX() { return m_loc.X; }
 			unsigned getY() { return m_loc.Y; }
-			bool IsWayPoint();
-			void SetAsWayPoint();
+			unsigned GetWayPointType();
+			void SetAsWayPoint(unsigned wayPointType);
 			CellLocation GetPos(){return m_loc;	}
 
 			bool isCellWalkable();
 
 		protected:
 			vector<Cell*> m_Neighbors;
-			bool m_fIsWayPoint;
+			unsigned m_wayPointType;
 
 	};
 }

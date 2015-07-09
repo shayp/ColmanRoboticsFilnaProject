@@ -1,6 +1,9 @@
 #include "SimManager.h"
 #include <math.h>
 #include "../AStar/FindPath.h"
+#include "WayPointManager.h"
+#include "../Config/Config.h"
+
 using namespace Utils;
 
 SimManager::SimManager(const char* cfgFilePath)
@@ -28,6 +31,23 @@ void SimManager::run()
 	BuildMap();
 
 	vector<Cell*> WayPoints = RunAStar();
+	WaypointManager wpWaypointManager;
+
+	if (wpWaypointManager.SetPath(WayPoints,  DEFAULT_WAYPOINT_RESOLUTION, DEFAULT_WAYPOINT_ACCURACY) == true)
+	{
+		vector<Cell*> Path = wpWaypointManager.GetAllWayPoints();
+		for (Cell* PathCell : Path)
+		{
+			if (PathCell != NULL)
+			{
+				m_BlownMap->getCell(PathCell->m_loc.X, PathCell->m_loc.Y)->SetAsWayPoint(ePathWayPoint);
+			}
+		}
+	}
+	else
+	{
+		printf("/nError setting path from A Star/n");
+	}
 
 	string mapFilename = m_Config->getPngMapPath();
 

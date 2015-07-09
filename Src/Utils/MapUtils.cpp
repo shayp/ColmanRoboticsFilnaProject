@@ -33,6 +33,7 @@ Map* MapUtils::pngToMap(string pngMapPath, float pixelsPerGridResolution)
 void MapUtils::mapToPng(Map* map, float pixelsPerGridResolution, string pngMapPath)
 {
 	vector<unsigned char> rawImage;
+	unsigned wayPointType;
 	unsigned width = (unsigned)floor(map->getCols() * pixelsPerGridResolution);
 	unsigned height = (unsigned)floor(map->getRows() * pixelsPerGridResolution);
 	rawImage.resize(width * height * 4);
@@ -85,11 +86,18 @@ void MapUtils::mapToPng(Map* map, float pixelsPerGridResolution, string pngMapPa
 				bPixel = 14;
 			}
 
-			if(cell->IsWayPoint())
+			wayPointType = cell->GetWayPointType();
+			if(wayPointType == eAStarWayPoint)
 			{
 				rPixel = 15;
 				gPixel = 192;
 				bPixel = 202;
+			}
+			else if(wayPointType == ePathWayPoint)
+			{
+				rPixel = 169;
+				gPixel = 69;
+				bPixel = 189;
 			}
 
 			int basePos = (row * width + col) * 4 * flooredResolution;
