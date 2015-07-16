@@ -1,10 +1,9 @@
-#if 0
 #ifndef MANAGER_H_
 #define MANAGER_H_
 
-#include "Plans/Plan.h"
-#include "Behaviours/Behavior.h"
-#include "Robot.h"
+#include "../Plans/Plan.h"
+#include "../Behaviours/Behavior.h"
+#include "../RobotAPI/Robot.h"
 #include "SlamManager.h"
 
 class Manager
@@ -13,9 +12,9 @@ private:
 	Robot* _robot;
 	Plan* _plan;
 	Behavior* _curr;
-	SlamManager* _slamManager;
+	//SlamManager* _slamManager;
 	float _laserScan[SCAN_SPAN];
-	int countSlamExe;
+	//int countSlamExe;
 	double dX, dY, dYaw;
 
 
@@ -27,4 +26,3 @@ public:
 };
 
 #endif /* MANAGER_H_ */
-#endif
