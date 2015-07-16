@@ -6,12 +6,28 @@
 
 using namespace Utils;
 
-SimManager::SimManager(const char* cfgFilePath)
+ SimManager* SimManager::pInstance = NULL;
+
+SimManager* SimManager::GetInstance()
+{
+	if (pInstance == NULL)
+	{
+		pInstance = new SimManager();
+	}
+
+	return pInstance;
+}
+SimManager::SimManager()
+{
+
+}
+
+bool SimManager::Init(const char* cfgFilePath)
 {
 	m_Config = new SimulationConfig(cfgFilePath);
 
-	m_Map = NULL;
 	m_BlownMap = NULL;
+	m_Map = NULL;
 }
 
 SimManager::~SimManager()
@@ -19,11 +35,11 @@ SimManager::~SimManager()
 	delete m_Config;
 	m_Config = NULL;
 
-	delete m_Map;
-	m_Map = NULL;
-
 	delete m_BlownMap;
 	m_BlownMap = NULL;
+
+	delete m_Map;
+	m_Map = NULL;
 }
 
 void SimManager::run()

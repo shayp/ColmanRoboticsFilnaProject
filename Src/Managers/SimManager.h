@@ -11,18 +11,22 @@ using namespace config;
 class SimManager
 {
 	public:
-		SimManager(const char* cfgFilePath);
-		virtual ~SimManager();
 
+		static SimManager* GetInstance();
+		bool Init(const char* cfgFilePath);
 		void run();
+		Map* m_Map;
 
 	private:
+		SimManager();
+		virtual ~SimManager();
 		SimulationConfig* m_Config;
-		Map* m_Map;
+		static SimManager* pInstance;
 		Map* m_BlownMap;
 
 		void BuildMap();
 		vector<Cell*> RunAStar();
+
 };
 
 #endif SIM_MANAGER_H

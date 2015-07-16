@@ -9,8 +9,8 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	SimManager* smuManager = new SimManager(CPG_FILE_PATH);
-	smuManager->run();
+	SimManager::GetInstance()->Init(CPG_FILE_PATH);
+	SimManager::GetInstance()->run();
 	/*Robot robot("localhost",6665);
 	PlnObstacleAvoid pln(&robot);
 	Manager m(&robot,&pln);
