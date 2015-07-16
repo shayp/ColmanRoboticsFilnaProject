@@ -3,6 +3,7 @@
 
 #include "../CoreLib/Map.h"
 #include "../Config/SimulationConfig.h"
+#include "../Managers/WayPointManager.h"
 #include "../Utils/MapUtils.h"
 #include "../Utils/PngUtils.h"
 using namespace CoreLib;
@@ -15,6 +16,7 @@ class SimManager
 		static SimManager* GetInstance();
 		bool Init(const char* cfgFilePath);
 		void run();
+		vector<Cell*> GetAllWayPoints();
 		Map* m_Map;
 
 	private:
@@ -23,6 +25,7 @@ class SimManager
 		SimulationConfig* m_Config;
 		static SimManager* pInstance;
 		Map* m_BlownMap;
+		WaypointManager* m_wpManager;
 
 		void BuildMap();
 		vector<Cell*> RunAStar();

@@ -19,7 +19,7 @@ SimManager* SimManager::GetInstance()
 }
 SimManager::SimManager()
 {
-
+	m_wpManager = new WaypointManager();
 }
 
 bool SimManager::Init(const char* cfgFilePath)
@@ -47,11 +47,10 @@ void SimManager::run()
 	BuildMap();
 
 	vector<Cell*> WayPoints = RunAStar();
-	WaypointManager wpWaypointManager;
 
-	if (wpWaypointManager.SetPath(WayPoints,  DEFAULT_WAYPOINT_RESOLUTION, DEFAULT_WAYPOINT_ACCURACY) == true)
+	if (m_wpManager->SetPath(WayPoints,  DEFAULT_WAYPOINT_RESOLUTION, DEFAULT_WAYPOINT_ACCURACY) == true)
 	{
-		vector<Cell*> Path = wpWaypointManager.GetAllWayPoints();
+		vector<Cell*> Path = m_wpManager->GetAllWayPoints();
 		for (Cell* PathCell : Path)
 		{
 			if (PathCell != NULL)
@@ -113,5 +112,10 @@ vector<Cell*> SimManager::RunAStar()
 	Cell* EndLocation = new Cell(m_Config->getRobotEndLocation().X, m_Config->getRobotEndLocation().Y);
 	return pathFinder->search(StartLocation, EndLocation);
 
+}
+
+vector<Cell*> SimManager::GetAllWayPoints()
+{
+	return m_wpManager->GetAllWayPoints();
 }
 
