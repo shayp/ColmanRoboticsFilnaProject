@@ -17,7 +17,10 @@ public:
 	void read();
 	void setSpeed(float speed, float angularSpeed);
 	void getDelta(double &dX,double &dY,double &dYaw);
-	void UpdateLocation(double x, double y, double yaw, bool isSetOdo);
+	void UpdateLocation(double x, double y, double yaw);
+	LaserProxy* GetLaserProxy() {
+		return _lp;
+	}
 	float getLaserDistance(int index);
 	virtual ~Robot();
 };

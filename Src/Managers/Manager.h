@@ -15,7 +15,7 @@ private:
 	SlamManager* _slamManager;
 	float _laserScan[SCAN_SPAN];
 	int countSlamExe;
-	double dX, dY, dYaw;
+	//double dX, dY, dYaw;
 
 
 public:

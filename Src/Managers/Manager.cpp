@@ -14,26 +14,27 @@ Manager::Manager(Robot* robot, Plan* plan) {
 
 void Manager::run()
 {
-	float x,y,yaw;
+	double x,y,yaw,dX,dY,dYaw;
 	_robot->getDelta(dX,dY,dYaw);
-	cout << "==== Setting delta first time" << endl;
+	cout << "==== The delta:" << endl;
 	cout << dX << "  " << dY << "  " << dYaw << endl << endl;
-	_slamManager->UpdateParticles(dX, dY, dYaw, _laserScan, SCAN_SPAN);
-	_slamManager->GetLocationByParticles(x,y,yaw);
-	cout << "==== The partical first belif" << endl;
-	cout << x << "  " << y << "  " << yaw << endl;
-	_robot->UpdateLocation(x,y,yaw, true);
+	cout << "========================" << endl;
+
+	//_slamManager->UpdateParticles(dX, dY, dYaw, _laserScan, SCAN_SPAN,_robot->GetLaserProxy());
+	//_slamManager->GetLocationByParticles(x,y,yaw);
+	//cout << "========== The best particle found:" << endl;
+	//cout << x << "  " << y << "  " << yaw << endl;
+	//cout << "========================" << endl;
+	//_robot->UpdateLocation(x,y,yaw);
 	_robot->read();
 
-	//_slamManager->UpdateParticles(dX, dY, dYaw, _laserScan, SCAN_SPAN);
-	//			_slamManager->PrintParticles();
 	if (_curr->startCond() == false)
 	{
 		return;
 	}
 
 	_curr->action();
-
+	float laserMaxRange;
 	while(true)
 	{
 		_robot->read();
@@ -43,9 +44,13 @@ void Manager::run()
 		while ((_curr->stopCond()) == false)
 		{
 			_robot->getDelta(dX,dY,dYaw);
-			_slamManager->UpdateParticles(dX, dY, dYaw, _laserScan, SCAN_SPAN);
+			 for (int i = 0; i < SCAN_SPAN; i++)
+			 _laserScan[i] = _robot->getLaserDistance(i);
+			_slamManager->UpdateParticles(dX, dY, dYaw, _laserScan, SCAN_SPAN,_robot->GetLaserProxy());
 			_slamManager->GetLocationByParticles(x,y,yaw);
-			_robot->UpdateLocation(x,y,yaw, true);
+			cout<< "before error" << endl;
+			_robot->UpdateLocation(x,y,yaw);//, true);
+			cout<< "after error" << endl;
 			_curr->action();
 			_robot->read();
 			//cout << "while is true" << endl;
@@ -87,8 +92,7 @@ void Manager::run()
 		 }
 		 }
 		 _robot->getDelta(dX,dY,dYaw);
-		 for (int i = 0; i < SCAN_SPAN; i++)
-		 _laserScan[i] = _robot->getLaserDistance(i);
+
 		// _slamManager->UpdateParticles(dX, dY, dYaw, _laserScan);
 
 	}

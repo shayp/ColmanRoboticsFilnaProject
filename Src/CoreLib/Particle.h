@@ -25,6 +25,8 @@
 #define INDEX_PER_DEGREE 6
 #define MAX_DEGREE 360
 
+#include <libplayerc++/playerc++.h>
+using namespace PlayerCc;
 using namespace std;
 
 namespace CoreLib
@@ -38,15 +40,13 @@ namespace CoreLib
 		double pBelief;
 
 		//Constructors of objects type of Particle
-		Particle(float x, float y);
-		Particle(float x, float y, float yaw);
 		Particle(float x, float y, float yaw, float belief);
 
 		//Method which handles the particle position update
-		void UpdateParticle(float delX, float delY, float delYaw, float laserScan[], int laserCount);
+		void UpdateParticle(float delX, float delY, float delYaw, float laserScan[], int laserCount, LaserProxy* lp);
 
 		//Method which calculate the particle's probability by map
-		float ProbUpdateMapByScan(float laserScan[], int laserCount);
+		float ProbUpdateMapByScan(float laserScan[], int laserCount,LaserProxy* lp);
 
 		//Method which calculate the particle's probability
 		float ProbCalc(float delX, float delY, float delTetha);
@@ -68,7 +68,8 @@ namespace CoreLib
 		// for debugging.
 		void PrintParticle()
 		{
-			cout << "x: " << pX << "      y: " << pY << "     yaw: " << pYaw << endl;
+			cout << "x: " << pX << "      y: " << pY << "     yaw: " << pYaw << "    " <<
+					"belief: " << pBelief << endl;
 		}
 
 	};

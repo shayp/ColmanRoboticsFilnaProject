@@ -38,15 +38,16 @@ void Robot::getDelta(double &dX,double &dY,double &dYaw)
 
 	PositionUtils::FixRad(dYaw);
 }
-void Robot::UpdateLocation(double x, double y, double yaw, bool isSetOdo)
+void Robot::UpdateLocation(double x, double y, double yaw)//, bool isSetOdo)
 {
-	if (isSetOdo)
+	/*if (isSetOdo)
 	{
 		while (_pp->GetXPos() != x || _pp->GetYPos() != y ||_pp->GetYPos() != yaw)
 		{
 			_pp->SetOdometry(x,y,yaw);
 		}
-	}
+	}*/
+	//_pp->SetOdometry(x,y,yaw);
 }
 void Robot::setSpeed(float speed, float angularSpeed)
 {

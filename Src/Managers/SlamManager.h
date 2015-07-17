@@ -9,10 +9,13 @@
 #include "../CoreLib/Particle.h"
 #include <vector>
 
-#define PART_COUNT 20
+#include <libplayerc++/playerc++.h>
+using namespace PlayerCc;
+
+#define PART_COUNT 50
 #define THRESH_LOW 0.5
 #define THRESH_HIGH 0.8
-#define RADIUS 0.2
+#define RADIUS 0.1
 using namespace CoreLib;
 
 typedef vector <Particle> particlesVec;
@@ -30,18 +33,29 @@ public:
 	void InitParticles(float xRobot,float yRobot,float yawRobot);
 
 	//Method that updates all the particles in the vector
-	void UpdateParticles(float delX, float delY, float delTetha,float laserScan[], int laserCount);
+	void UpdateParticles(float delX, float delY, float delTetha,float laserScan[], int laserCount,LaserProxy* lp);
 
 	//Method that returns the location of the robot by the slam system.
-	void GetLocationByParticles(float &x,float &y,float &yaw);
+	bool GetLocationByParticles(double &x,double &y,double &yaw);
 
 	//for debug
 	void PrintParticles() {
-			for(int i=0; i < particles.size(); i++){
-				cout << "particle " << i  << endl;
-				particles[i].PrintParticle();
+		particlesVec::iterator pCurr = particles.begin();
+		particlesVec::iterator pEnd = particles.end();
+		int counter = 0;
+		if (particles.size() == 0){
+			cout << "0 PARTICLES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+			exit(1);
+		}
+				for (; counter < particles.size(); pCurr++) {
+					cout << "=============================================" << endl;
+					cout << "Particle " << counter << " :" << endl;
+					pCurr->PrintParticle();
+					cout << "=============================================" << endl;
+					counter++;
+				}
 			}
-	}
+
 	//Destructor of objects type of SlamManager
 	virtual ~SlamManager();
 };
