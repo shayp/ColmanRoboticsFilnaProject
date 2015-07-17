@@ -12,7 +12,7 @@
 #define PART_COUNT 20
 #define THRESH_LOW 0.5
 #define THRESH_HIGH 0.8
-#define RADIUS 6
+#define RADIUS 0.2
 using namespace CoreLib;
 
 typedef vector <Particle> particlesVec;

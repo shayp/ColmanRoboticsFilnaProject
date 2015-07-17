@@ -33,6 +33,10 @@ public:
 	}
 
 	static float RobotRelativeXPosToPixelXCoord(float dX, float resolution, float mapWidth) {
+		if (resolution == 0)
+		{
+			return 0;
+		}
 		double quarterSize = (mapWidth / 2) / resolution;
 
 		if (dX > 0)

@@ -10,6 +10,7 @@
 #include <math.h>
 #include <iostream>
 #include <time.h>
+#include "../Utils/CordianteConverter.h"
 
 using namespace CoreLib;
 
@@ -29,13 +30,13 @@ Particle::Particle(float x, float y, float yaw, float belief){
 
 //Method which handles the particle position update
 void Particle::UpdateParticle(float delX, float delY, float delYaw, float laserScan[], int laserCount) {
-	cout << " Inside UpdateParticle, before M_TO_CM" << endl;
+	cout << " THE COORDINATES BEFORE ADDING DELTA:" << endl;
 	cout << pX << "  " << pY << "  " << pYaw << endl;
 	// moving the particle with the same estimated vector that the robot itself moved
 	pX += delX;
 	pY += delY;
 	pYaw += delYaw;
-	cout << " Inside UpdateParticle, after M_TO_CM:" << endl;
+	cout << "THE COORDINATES AFTER ADDING DELTA: "<< endl;
 	cout << pX << "  " << pY << "  " << pYaw << endl;
 	// updating the belief of the new location!
 	cout << " before ProbUpdateMapByScan" << endl;
@@ -45,32 +46,26 @@ void Particle::UpdateParticle(float delX, float delY, float delYaw, float laserS
 
 //Method which calculate the particle's probability by map
 float Particle::ProbUpdateMapByScan(float laserScan[], int laserCount) {
-	cout << laserCount << endl;
-	cout << "begins ProbUpdateMapByScan" << endl;
 	float xObj,yObj;
 	int mismatch = 0;
 	int match = 0;
 	int i,j;
 
 	for (i=0; i<laserCount; i = i+INDEX_PER_DEGREE) {
-		//cout << "inside for" << endl;
 		// the sensor detects that the road is open
 		if (laserScan[i] > OPEN_PATH_RANGE) {
-			cout << "open" << endl;
+			cout << "the laser scan tells its open" << endl;
 			for (j=SENSOR_FROM_END; j<=SENSOR_DETECTION_RANGE; j = j+CELL_DIM) {
 				//cout << "inside j for" << endl;
-				xObj = (j * cos(DTOR(ConverteIndexToAngle(i,laserCount,LASER_ANGLE_RANGE)) + pYaw)) + pX;
+				xObj = pX;//(j * cos(DTOR(ConverteIndexToAngle(i,laserCount,LASER_ANGLE_RANGE)) + pYaw)) + pX;
 				//cout << "after xObj" << endl;
-				yObj = (j * sin(DTOR(ConverteIndexToAngle(i,laserCount,LASER_ANGLE_RANGE)) + pYaw)) + pY;
-				//cout << "after yObj" << endl;
-				cout << "before trimming:" << endl;
-				cout<< "xObj = " << xObj << "	" << "yObj= " << yObj << endl;
-				cout << "after trimming: " ;
-				xObj = (int)xObj;
-				yObj = (int) yObj;
-				cout << xObj << "   " << yObj << endl;
-				//if(SimManager::GetInstance()->m_Map->getCell(xObj,yObj))
-				if(SimManager::GetInstance()->m_Map->getCell(xObj,yObj)->isCellWalkable()) // the cell is open (like the laser detects)
+				yObj = pY;//(j * sin(DTOR(ConverteIndexToAngle(i,laserCount,LASER_ANGLE_RANGE)) + pYaw)) + pY;
+				cout << "numbers before RobotRelativeXPosToPixelXCoord: X=" << pX << "    Y=" <<  pY << endl;
+				// TODO: Change to grid resplution instead of 10
+				unsigned X = CordinateConvert::RobotRelativeYPosToPixelYCoord(yObj, 10, SimManager::GetInstance()->m_Map->getCols());
+				unsigned Y = CordinateConvert::RobotRelativeXPosToPixelXCoord(xObj, 10, SimManager::GetInstance()->m_Map->getRows());
+				cout << "new numbers after RobotRelativeXPosToPixelXCoord: X=" << X << "    Y=" <<  Y << endl;
+				if(SimManager::GetInstance()->m_Map->getCell(X, Y)->isCellWalkable()) // the cell is open (like the laser detects)
 				 {
 					match++;
 					cout << "match!" << endl;
@@ -84,8 +79,12 @@ float Particle::ProbUpdateMapByScan(float laserScan[], int laserCount) {
 		// the laser detects that the road is closed
 		}else {
 			cout << "closed" << endl;
-			xObj = ((M_TO_CM(laserScan[i])) * cos(DTOR(ConverteIndexToAngle(i,laserCount,LASER_ANGLE_RANGE)) + pYaw)) + pX;
-			yObj = ((M_TO_CM(laserScan[i])) * sin(DTOR(ConverteIndexToAngle(i,laserCount,LASER_ANGLE_RANGE)) + pYaw)) + pY;
+
+			xObj = pX;//((M_TO_CM(laserScan[i])) * cos(DTOR(ConverteIndexToAngle(i,laserCount,LASER_ANGLE_RANGE)) + pYaw)) + pX;
+			yObj = pY;//((M_TO_CM(laserScan[i])) * sin(DTOR(ConverteIndexToAngle(i,laserCount,LASER_ANGLE_RANGE)) + pYaw)) + pY;
+			unsigned X = CordinateConvert::RobotRelativeXPosToPixelXCoord(yObj, 10, SimManager::GetInstance()->m_Map->getCols());
+			unsigned Y = CordinateConvert::RobotRelativeXPosToPixelXCoord(xObj, 10, SimManager::GetInstance()->m_Map->getRows());
+			cout<< "xObj = " << xObj << "	" << "yObj= " << yObj << endl;
 			if (SimManager::GetInstance()->m_Map->getCell(xObj,yObj)->isCellWalkable()) // the cell is open (and the laser detects otherwise)
 			{
 				mismatch++;
@@ -101,7 +100,10 @@ float Particle::ProbUpdateMapByScan(float laserScan[], int laserCount) {
 	if ((mismatch + match) == 0)
 		return (float) 0;
 	else
+	{
+		cout << "matched:" << match << "	" << "mismatch: " << mismatch << endl;
 		return ((float)(match))/(mismatch + match);
+	}
 
 }
 

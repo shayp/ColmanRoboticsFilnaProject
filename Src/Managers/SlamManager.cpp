@@ -15,12 +15,13 @@ SlamManager::SlamManager(float xRobot,float yRobot,float yawRobot) {
 
 //Initiation method -  Creates one particle in the given location
 void SlamManager::InitParticles(float xRobot,float yRobot,float yawRobot) {
-	Particle newP(xRobot,yRobot,yawRobot);
+	Particle* newP = new Particle(xRobot,yRobot,yawRobot);
 	particles.clear();
-	particles.push_back(newP);
+	particles.push_back(*newP);
 	cout<<"-----------------------------------"<<endl;	
-	cout<<"First Particle Created!"<<endl;
+	cout<<"First Particle Created! his coordinates are:"<<endl;
 	cout<<"-----------------------------------"<<endl;
+	cout << "X:"<< particles.begin()->GetX() << "     " <<"Y:" << particles.begin()->GetY() << "    " << "Yaw:" << particles.begin()->GetYaw()<< endl;
 }
 
 //Method which gives the ability to update all particles which are stored in the vector
@@ -36,14 +37,22 @@ void SlamManager::UpdateParticles(float delX, float delY, float delTetha,float l
 			pCurr->UpdateParticle(delX,delY, delTetha,laserScan,laserCount);
 			cout << "finished to update pCurr particle" << endl;
 			if (pCurr->GetBelief() < THRESH_LOW)
+			{
+				 cout << "DELETING PARTICLE!!!" << endl;
 				particles.erase(pCurr);
+			}
 			else if ((pCurr->GetBelief() > THRESH_HIGH) && (particles.size() < PART_COUNT)) {
-					 int randX = std::rand() % (-RADIUS/2) + (RADIUS/2);
-					 int randY = std::rand() % (-RADIUS/2) + (RADIUS/2);
-					 int randYaw = std::rand() % (-RADIUS/2) + (RADIUS/2);
-
+				for(int q=0; q < 3; q++){
+					 double randX = (double)rand()/(RAND_MAX+1)*(RADIUS-0)+RADIUS; //std::rand() % (-RADIUS/2) + (RADIUS/2);
+					 double randY = (double)rand()/(RAND_MAX+1)*(RADIUS-0)+RADIUS; //std::rand() % (-RADIUS/2) + (RADIUS/2);
+					 double randYaw = (double)rand()/(RAND_MAX+1)*(RADIUS-0)+RADIUS; //std::rand() % (-RADIUS/2) + (RADIUS/2);
+					 cout << "CREATING NEW PARTICLE!!!" <<endl;
+					 cout << "old coordinate:" << endl;
+					 cout<< "X:" << pCurr->pX << "  " << "Y:" << pCurr->pY << "     " << "yaw:" << pCurr->pYaw << endl;
 					 Particle newP(pCurr->pX + randX,pCurr->pY + randY,pCurr->pYaw + randYaw);
+					 newP.PrintParticle();
 					 particles.push_back(newP);
+				}
 			}
 		}
 
@@ -60,6 +69,12 @@ void SlamManager::GetLocationByParticles(float &x,float &y,float &yaw) {
 		if (particles[i].pBelief > pBest.pBelief){
 			pBest = particles[i];
 		}
+	}
+	if (pBest.pBelief < THRESH_LOW)
+	{
+		x = 0;
+		y = 0;
+		yaw = 0;
 	}
 		x = pBest.GetX();
 		y= pBest.GetY();
