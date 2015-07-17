@@ -1,5 +1,7 @@
 #include "Robot.h"
+#include "../Utils/PositionUtils.h"
 
+using namespace Utils;
 Robot::Robot(char* ip, int port)
 {
 	_pc = new PlayerClient(ip,port);
@@ -9,6 +11,8 @@ Robot::Robot(char* ip, int port)
 
 	_pp->SetMotorEnable(true);
 	int i;
+
+	//Fix the player bug
 	for(i=0;i<15;i++)
 		_pc->Read();
 }
@@ -26,6 +30,9 @@ void Robot::getDelta(double &dX,double &dY,double &dYaw)
 
 	_location->setX(dX);
 	_location->setY(dY);
+
+	PositionUtils::FixRad(dYaw);
+
 	_location->setYaw(dYaw);
 }
 

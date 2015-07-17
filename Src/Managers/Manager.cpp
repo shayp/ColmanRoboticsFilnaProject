@@ -46,11 +46,11 @@ void Manager::run()
 			}
 
 			countSlamExe++;
-
+		*/
 			_curr->action();
 			_robot->read();
 		}
-		*/
+
 		_curr = _curr->selectNext();
 		_curr->action();
 
@@ -68,8 +68,8 @@ void Manager::run()
 		// _slamManager->UpdateParticles(dX, dY, dYaw, _laserScan);
 
 	}
-	}
 }
+
 
 
 

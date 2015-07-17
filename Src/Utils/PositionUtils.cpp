@@ -1,19 +1,13 @@
 #include "PositionUtils.h"
 #include <math.h>
 #include <cmath>
+#include "../RobotAPI/Location.h"
+#include <float.h>
+#include <iostream>
 using namespace Utils;
+using namespace std;
 
-#define NORMALIZE_ANGLE(angle)		\
-{					\
-if (angle < 0)				\
-	angle += (2 * M_PI);		\
-else if (angle >= (2 * M_PI))		\
-	while (angle > (2 * M_PI))	\
-		angle -= (2 * M_PI);	\
-}					\
-
-
-float PositionUtils::CalcDistance(Cell& from, Cell& to)
+float PositionUtils::CalcDistance(Location& from, Location& to)
 	{
 		float dY = (signed)(to.getY() - from.getY());
 		float dX = (signed)(to.getX() - from.getX());
@@ -21,7 +15,7 @@ float PositionUtils::CalcDistance(Cell& from, Cell& to)
 		return sqrt(dX * dX + dY * dY);
 	}
 
-	float PositionUtils::CalcGradient(Cell& from, Cell& to)
+	float PositionUtils::CalcGradient(Location& from, Location& to)
 	{
 		float dY = (signed)(to.getY() - from.getY());
 		float dX = (signed)(to.getX() - from.getX());
@@ -51,7 +45,7 @@ float PositionUtils::CalcDistance(Cell& from, Cell& to)
 		return fRightCost;
 	}
 
-	float PositionUtils::CalcGradientAngleOffset(Cell& from, Cell& to, float angle)
+	float PositionUtils::CalcGradientAngleOffset(Location& from, Location& to, float angle)
 	{
 		//float fGradient = SPosition::CalcGradient(from, to);
 		float dY = (signed)(to.getY() - from.getY()) * (-1);
@@ -83,3 +77,34 @@ float PositionUtils::CalcDistance(Cell& from, Cell& to)
 
 		return fAngleOffset;
 	}
+
+	double PositionUtils::SpinSpeedByDeg(float deg)
+		{
+			cout << "deg: " << deg << endl;
+			//Look for func that return 1 for 180 and 0 for 0 or 360
+			double newSpeed = (-0.00003*pow(deg,2.0))+0.01111 *deg;
+			cout << "speed: " << newSpeed << endl;
+			//We don't want the speed too slow
+			newSpeed+=0.1;
+			cout << "after add 0.1: " << newSpeed << endl;
+			//Chose the direction to spin
+			if(deg>180)
+			{
+				newSpeed*=(-1);
+			}
+			cout << "after direction: " << newSpeed << endl;
+			//cout << "return speed: " << newSpeed << endl;
+			return newSpeed;
+		}
+
+		void PositionUtils::FixRad(double &rad)
+		{
+				while(rad < 0)
+				{
+					rad += 2 * M_PI;
+				}
+				while (rad >= (2 * M_PI))
+				{
+					rad -= (2 * M_PI);
+				}
+		}

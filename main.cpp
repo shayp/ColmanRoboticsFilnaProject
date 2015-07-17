@@ -3,10 +3,12 @@
 #include "Src/Plans/PlnObstacleAvoid.h"
 #include "Src/Managers/SimManager.h"
 #include "Src/Managers/Manager.h"
+#include "Src/Utils/PositionUtils.h"
 
 const char* CPG_FILE_PATH =  "parameters.txt";
 
 using namespace std;
+using namespace Utils;
 
 int main(int argc, char** argv)
 {
@@ -16,7 +18,5 @@ int main(int argc, char** argv)
 	PlnObstacleAvoid pln(&robot);
 	Manager m(&robot,&pln);
 	m.run();
-
-
 
 }

@@ -23,8 +23,15 @@ unsigned WaypointManager::FindNextSignificantNode(vector<Cell*> vPath, unsigned 
 	// Begin traversing path nodes according to sample resolution
 	for (dwCurrNode = dwStartNode + dwResolution; dwCurrNode < vPath.size() && dwCurrNode < dwLimitNode; dwCurrNode += dwResolution)
 	{
+
+		Location from, to;
+
+		from.setX(pTestNode->getX());
+		from.setY(pTestNode->getY());
+		to.setX(vPath[dwCurrNode]->getX());
+		to.setY(vPath[dwCurrNode]->getY());
 		// Calculate current gradient
-		fCurrentGradient = PositionUtils::CalcGradient(*pTestNode, *vPath[dwCurrNode]);
+		fCurrentGradient = PositionUtils::CalcGradient(from, to);
 
 		/*printf("Comparing nodes %u (%u, %u) and %u (%u, %u), is gradient %f significant enough next to %f? ",
 			dwStartNode, pTestNode->GetXPos(), pTestNode->GetYPos(),
@@ -64,15 +71,30 @@ bool WaypointManager::SetPath(vector<Cell*> vPath, unsigned dwResolution, float 
 	// Starting node is always a new waypoint...
 	LinkNextWaypoint(vPath[0], NULL);
 
+	Location from;
+	Location to;
+
+	from.setX(vPath[0]->getX());
+	from.setY(vPath[0]->getY());
+
+	to.setX(vPath[1]->getX());
+	to.setY(vPath[1]->getY());
+
 	// Initial lookup values
-	fLastGradient = PositionUtils::CalcGradient(*vPath[0], *vPath[1]);
+	fLastGradient = PositionUtils::CalcGradient(from, to);
 
 	// Begin searching for significant waypoints
 	for (unsigned dwLastNode = 1, dwCurrNode = FindNextSignificantNode(vPath, 0, vPath.size(), dwResolution, fLastGradient, fLinearAccuracy);
 		   dwCurrNode < vPath.size();
 		   dwCurrNode = FindNextSignificantNode(vPath, dwCurrNode, vPath.size(), dwResolution, fLastGradient, fLinearAccuracy))
 	{
-		fCurrentGradient = PositionUtils::CalcGradient(*vPath[dwCurrNode - dwResolution], *vPath[dwCurrNode]);
+		Location from;
+		Location to;
+		from.setX(vPath[dwCurrNode - dwResolution]->m_loc.X);
+		from.setY(vPath[dwCurrNode - dwResolution]->m_loc.Y);
+		to.setX(vPath[dwCurrNode]->m_loc.X);
+		to.setY(vPath[dwCurrNode]->m_loc.Y);
+		fCurrentGradient = PositionUtils::CalcGradient(from, to);
 
 		// Found a node where there's a difference, mark as waypoint
 		LinkNextWaypoint(vPath[dwCurrNode], pLastWaypoint);

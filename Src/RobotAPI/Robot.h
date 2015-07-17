@@ -3,7 +3,7 @@
 
 #include <libplayerc++/playerc++.h>
 #include "Location.h"
-
+#include "../Utils/PositionUtils.h"
 using namespace PlayerCc;
 
 class Robot

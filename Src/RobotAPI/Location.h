@@ -10,7 +10,7 @@ private:
 
 public:
 	Location();
-	Location(double x, double y, double yaw);
+	Location(double x, double y, double yaw = 0);
 	double getX();
 	double getY();
 	double getYaw();
