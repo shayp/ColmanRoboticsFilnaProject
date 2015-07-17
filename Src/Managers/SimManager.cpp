@@ -3,7 +3,7 @@
 #include "../AStar/FindPath.h"
 #include "WayPointManager.h"
 #include "../Config/Config.h"
-
+#include "../Utils/CordianteConverter.h"
 using namespace Utils;
 
  SimManager* SimManager::pInstance = NULL;
@@ -115,8 +115,20 @@ vector<Cell*> SimManager::RunAStar()
 
 }
 
-vector<Cell*> SimManager::GetAllWayPoints()
+vector<Location*> SimManager::GetAllWayPoints()
 {
-	return m_wpManager->GetAllWayPoints();
+	vector<Location*> SimulatrionWayPointLocations;
+	cout << "Rows used for X "<< m_Map->getRows() << " Cols Used for Y "<< m_Map->getCols() << "Resolution: " << m_Config->getPixelResolution() <<endl;
+	for (Cell* waypointCell: m_wpManager->GetAllWayPoints())
+	{
+		cout << "Map X Cord: "<< waypointCell->getX() << "Map Y Cord: "<< waypointCell->getY() << endl;
+		Location* newWayPoint = new Location(
+				CordinateConvert::PixelXCoordToRobotRelativeXPos(waypointCell->getY(),m_Config->getGridResolution(),m_Map->getCols()),
+				CordinateConvert::PixelYCoordToRobotRelativeYPos(waypointCell->getX(), m_Config->getGridResolution(), m_Map->getRows()),0);
+
+		cout << "Robot X Cord: "<< newWayPoint->getX() << "Robot Y Cord: "<< newWayPoint->getY() << endl;
+		SimulatrionWayPointLocations.push_back(newWayPoint);
+	}
+	return SimulatrionWayPointLocations;
 }
 

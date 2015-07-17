@@ -6,6 +6,7 @@
 #include "../Managers/WayPointManager.h"
 #include "../Utils/MapUtils.h"
 #include "../Utils/PngUtils.h"
+#include "../RobotAPI/Location.h"
 using namespace CoreLib;
 using namespace config;
 
@@ -16,7 +17,7 @@ class SimManager
 		static SimManager* GetInstance();
 		bool Init(const char* cfgFilePath);
 		void run();
-		vector<Cell*> GetAllWayPoints();
+		vector<Location*> GetAllWayPoints();
 		Map* m_Map;
 
 	private:

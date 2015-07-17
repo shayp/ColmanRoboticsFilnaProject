@@ -16,7 +16,7 @@ public:
 			dX *= -1;
 		}
 
-		return dX * resolution;
+		return dX / resolution;
 	}
 
 	static float PixelYCoordToRobotRelativeYPos(float dY, float resolution, float mapHeight) {
@@ -29,11 +29,11 @@ public:
 			dY = quarterSize - dY;
 		}
 
-		return dY * resolution;
+		return dY / resolution;
 	}
 
 	static float RobotRelativeXPosToPixelXCoord(float dX, float resolution, float mapWidth) {
-		double quarterSize = (mapWidth / 2) * resolution;
+		double quarterSize = (mapWidth / 2) / resolution;
 
 		if (dX > 0)
 			dX += quarterSize;
@@ -42,11 +42,11 @@ public:
 			dX = quarterSize - dX;
 		}
 
-		return dX / resolution;
+		return dX * resolution;
 	}
 
 	static float RobotRelativeYPosToPixelYCoord(float dY, float resolution, float mapHeight) {
-		float quarterSize = (mapHeight / 2) * resolution;
+		float quarterSize = (mapHeight / 2) / resolution;
 
 		if (dY < 0) {
 			dY *= -1;
@@ -55,7 +55,7 @@ public:
 			dY = quarterSize - dY;
 		}
 
-		return dY / resolution;
+		return dY * resolution;
 	}
 };
 
