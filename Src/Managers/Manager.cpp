@@ -4,9 +4,9 @@ Manager::Manager(Robot* robot, Plan* plan) {
 	_robot = robot;
 	_plan = plan;
 	_curr = plan->startPoint();
-	//_slamManager = new SlamManager(_robot->_location->getX(),
-		//	_robot->_location->getY());
-	//countSlamExe = 0;
+	_slamManager = new SlamManager(_robot->_location->getX(),
+		_robot->_location->getY(), _robot ->_location->getYaw());
+    countSlamExe = 0;
 	dX = 0;
 	dY = 0;
 	dYaw = 0;
@@ -16,6 +16,8 @@ void Manager::run()
 {
 	_robot->read();
 
+	//_slamManager->UpdateParticles(dX, dY, dYaw, _laserScan, SCAN_SPAN);
+	//			_slamManager->PrintParticles();
 	if (_curr->startCond() == false)
 	{
 		return;
@@ -26,10 +28,15 @@ void Manager::run()
 	while(true)
 	{
 		_robot->read();
-
+		//_slamManager->UpdateParticles(dX, dY, dYaw, _laserScan, SCAN_SPAN);
+		_slamManager->PrintParticles();
 		while ((_curr->stopCond()) == false)
 		{
-
+			//cout << "while is true" << endl;
+			//cout << dX << "  " << dY << "  " << dYaw << endl;
+			_slamManager->UpdateParticles(dX, dY, dYaw, _laserScan, SCAN_SPAN);
+			//cout << "update particle succeeded" << endl;
+			_slamManager->PrintParticles();
 			/*
 			// update particles on every 10th action
 			if (countSlamExe % 10 == 0)
@@ -51,7 +58,7 @@ void Manager::run()
 			_robot->read();
 			_robot->getDelta(dX,dY,dYaw);
 		}
-
+		//cout << "out of while!" << endl;
 		_curr = _curr->selectNext();
 		_curr->action();
 
@@ -70,9 +77,6 @@ void Manager::run()
 
 	}
 }
-
-
-
 
 Manager::~Manager() {
 }

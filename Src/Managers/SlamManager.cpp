@@ -25,12 +25,16 @@ void SlamManager::InitParticles(float xRobot,float yRobot,float yawRobot) {
 
 //Method which gives the ability to update all particles which are stored in the vector
 void SlamManager::UpdateParticles(float delX, float delY, float delTetha,float laserScan[], int laserCount) {
+	//cout << "begins to update particles" << endl;
 	particlesVec::iterator pCurr = particles.begin();
+	pCurr->PrintParticle();
 	particlesVec::iterator pEnd = particles.end();
-
+	pEnd->PrintParticle();
 	if (pCurr != pEnd) {
 		for (; pCurr!=pEnd; pCurr++ ) {
+			//cout << "begins to update pCurr particle" << endl;
 			pCurr->UpdateParticle(delX,delY, delTetha,laserScan,laserCount);
+			cout << "finished to update pCurr particle" << endl;
 			if (pCurr->GetBelief() < THRESH_LOW)
 				particles.erase(pCurr);
 			else if ((pCurr->GetBelief() > THRESH_HIGH) && (particles.size() < PART_COUNT)) {

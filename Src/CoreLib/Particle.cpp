@@ -29,44 +29,72 @@ Particle::Particle(float x, float y, float yaw, float belief){
 
 //Method which handles the particle position update
 void Particle::UpdateParticle(float delX, float delY, float delYaw, float laserScan[], int laserCount) {
-
+	cout << " Inside UpdateParticle, before M_TO_CM" << endl;
+	cout << pX << "  " << pY << "  " << pYaw << endl;
 	// moving the particle with the same estimated vector that the robot itself moved
-	pX += M_TO_CM(delX);
-	pY += M_TO_CM(delY);
+	pX += delX;
+	pY += delY;
 	pYaw += delYaw;
-
+	cout << " Inside UpdateParticle, after M_TO_CM:" << endl;
+	cout << pX << "  " << pY << "  " << pYaw << endl;
 	// updating the belief of the new location!
+	cout << " before ProbUpdateMapByScan" << endl;
 	pBelief *=  /* ProbCalc(delX, delY, delYaw) */ ProbUpdateMapByScan(laserScan,laserCount);
+	cout << " after ProbUpdateMapByScan" << endl;
 }
 
 //Method which calculate the particle's probability by map
 float Particle::ProbUpdateMapByScan(float laserScan[], int laserCount) {
+	cout << laserCount << endl;
+	cout << "begins ProbUpdateMapByScan" << endl;
 	float xObj,yObj;
 	int mismatch = 0;
 	int match = 0;
 	int i,j;
 
 	for (i=0; i<laserCount; i = i+INDEX_PER_DEGREE) {
-
+		//cout << "inside for" << endl;
 		// the sensor detects that the road is open
 		if (laserScan[i] > OPEN_PATH_RANGE) {
-
+			cout << "open" << endl;
 			for (j=SENSOR_FROM_END; j<=SENSOR_DETECTION_RANGE; j = j+CELL_DIM) {
+				//cout << "inside j for" << endl;
 				xObj = (j * cos(DTOR(ConverteIndexToAngle(i,laserCount,LASER_ANGLE_RANGE)) + pYaw)) + pX;
+				//cout << "after xObj" << endl;
 				yObj = (j * sin(DTOR(ConverteIndexToAngle(i,laserCount,LASER_ANGLE_RANGE)) + pYaw)) + pY;
-				 if(SimManager::GetInstance()->m_Map->getCell(xObj,yObj)->isCellWalkable()) // the cell is open (like the laser detects)
-					 match++;
-				 else
-					mismatch++;
+				//cout << "after yObj" << endl;
+				cout << "before trimming:" << endl;
+				cout<< "xObj = " << xObj << "	" << "yObj= " << yObj << endl;
+				cout << "after trimming: " ;
+				xObj = (int)xObj;
+				yObj = (int) yObj;
+				cout << xObj << "   " << yObj << endl;
+				//if(SimManager::GetInstance()->m_Map->getCell(xObj,yObj))
+				if(SimManager::GetInstance()->m_Map->getCell(xObj,yObj)->isCellWalkable()) // the cell is open (like the laser detects)
+				 {
+					match++;
+					cout << "match!" << endl;
+				 }
+				else
+				 {
+					 mismatch++;
+					 cout << "mismatch!" << endl;
+				 }
 			}
 		// the laser detects that the road is closed
 		}else {
+			cout << "closed" << endl;
 			xObj = ((M_TO_CM(laserScan[i])) * cos(DTOR(ConverteIndexToAngle(i,laserCount,LASER_ANGLE_RANGE)) + pYaw)) + pX;
 			yObj = ((M_TO_CM(laserScan[i])) * sin(DTOR(ConverteIndexToAngle(i,laserCount,LASER_ANGLE_RANGE)) + pYaw)) + pY;
 			if (SimManager::GetInstance()->m_Map->getCell(xObj,yObj)->isCellWalkable()) // the cell is open (and the laser detects otherwise)
+			{
 				mismatch++;
-			else
+				 cout << "mismatch!" << endl;
+			}
+			else{
 				match++;
+				 cout << "match!" << endl;
+			}
 		}
 	}
 
@@ -118,6 +146,8 @@ double Particle::GetYaw() {
 
 //Method which converts laser index to angle
 float Particle::ConverteIndexToAngle(int index, int x, int radius) {
+	if (x == 0)
+			return 0;
 	return ((float)index*((float)radius/x))-radius/2.0;
 }
 

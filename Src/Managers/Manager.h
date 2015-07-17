@@ -12,9 +12,9 @@ private:
 	Robot* _robot;
 	Plan* _plan;
 	Behavior* _curr;
-	//SlamManager* _slamManager;
+	SlamManager* _slamManager;
 	float _laserScan[SCAN_SPAN];
-	//int countSlamExe;
+	int countSlamExe;
 	double dX, dY, dYaw;
 
 

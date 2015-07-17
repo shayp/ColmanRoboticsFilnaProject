@@ -84,6 +84,7 @@ void SimManager::BuildMap()
 	float pixelsPerOneGrid = m_Config->getGridResolution() / m_Config->getPixelResolution();
 	m_Map = MapUtils::pngToMap(mapFilename, pixelsPerOneGrid);
 
+	cout << "Print m_Map size" << m_Map->getCols() << m_Map->getRows() << endl;
 	// Create blown map
 	int indexOfMapExt = mapFilename.find_last_of(".");
 	string blowMapFilename = string(mapFilename).insert(indexOfMapExt, "_blown");

@@ -12,8 +12,8 @@ using namespace Utils;
 
 int main(int argc, char** argv)
 {
-	//SimManager::GetInstance()->Init(CPG_FILE_PATH);
-	//SimManager::GetInstance()->run();
+	SimManager::GetInstance()->Init(CPG_FILE_PATH);
+	SimManager::GetInstance()->run();
 	Robot robot("localhost",6665);
 	PlnObstacleAvoid pln(&robot);
 	Manager m(&robot,&pln);
