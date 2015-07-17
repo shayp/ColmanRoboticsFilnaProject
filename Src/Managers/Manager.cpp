@@ -49,6 +49,7 @@ void Manager::run()
 		*/
 			_curr->action();
 			_robot->read();
+			_robot->getDelta(dX,dY,dYaw);
 		}
 
 		_curr = _curr->selectNext();
