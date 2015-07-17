@@ -64,6 +64,13 @@ namespace CoreLib
 
 		// Destructor of objects type of Particle
 		~Particle();
+
+		// for debugging.
+		void PrintParticle()
+		{
+			cout << "x: " << pX << "      y: " << pY << "     yaw: " << pYaw << endl;
+		}
+
 	};
 }
 #endif /* PARTICLE_H_ */

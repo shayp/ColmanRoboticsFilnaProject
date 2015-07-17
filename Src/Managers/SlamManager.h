@@ -35,6 +35,13 @@ public:
 	//Method that returns the location of the robot by the slam system.
 	void GetLocationByParticles(float &x,float &y,float &yaw);
 
+	//for debug
+	void PrintParticles() {
+			for(int i=0; i < particles.size(); i++){
+				cout << "particle " << i  << endl;
+				particles[i].PrintParticle();
+			}
+	}
 	//Destructor of objects type of SlamManager
 	virtual ~SlamManager();
 };

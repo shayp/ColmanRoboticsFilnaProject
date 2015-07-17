@@ -3,7 +3,9 @@
  */
 
 #include "SlamManager.h"
+#include <iostream>
 using namespace CoreLib;
+using namespace std;
 
 //Constructor SlamManager
 SlamManager::SlamManager(float xRobot,float yRobot,float yawRobot) {
@@ -17,7 +19,7 @@ void SlamManager::InitParticles(float xRobot,float yRobot,float yawRobot) {
 	particles.clear();
 	particles.push_back(newP);
 	cout<<"-----------------------------------"<<endl;	
-	cout<<"Particle Created!"<<endl;
+	cout<<"First Particle Created!"<<endl;
 	cout<<"-----------------------------------"<<endl;
 }
 
