@@ -28,18 +28,18 @@ Particle::Particle(float x, float y, float yaw, float belief){
 
 //Method which handles the particle position update
 void Particle::UpdateParticle(float delX, float delY, float delYaw, float* laserScan, int laserCount,LaserProxy* lp) {
-	cout << " THE COORDINATES BEFORE ADDING DELTA:" << endl;
-	cout << pX << "  " << pY << "  " << pYaw << endl;
+	//cout << " THE COORDINATES BEFORE ADDING DELTA:" << endl;
+	//cout << pX << "  " << pY << "  " << pYaw << endl;
 	// moving the particle with the same estimated vector that the robot itself moved
 	pX += delX;
 	pY += delY;
 	pYaw += delYaw;
-	cout << "THE COORDINATES AFTER ADDING DELTA: "<< endl;
-	cout << pX << "  " << pY << "  " << pYaw << endl;
+	//cout << "THE COORDINATES AFTER ADDING DELTA: "<< endl;
+	//cout << pX << "  " << pY << "  " << pYaw << endl;
 	// updating the belief of the new location!
-	cout << " before ProbUpdateMapByScan" << endl;
+	//cout << " before ProbUpdateMapByScan" << endl;
 	pBelief *=  /* ProbCalc(delX, delY, delYaw) */ ProbUpdateMapByScan(laserScan,laserCount,lp);
-	cout << " after ProbUpdateMapByScan" << endl;
+	//cout << " after ProbUpdateMapByScan" << endl;
 }
 
 //Method which calculate the particle's probability by map

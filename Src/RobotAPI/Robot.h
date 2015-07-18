@@ -4,6 +4,7 @@
 #include <libplayerc++/playerc++.h>
 #include "Location.h"
 #include "../Utils/PositionUtils.h"
+#include "../RobotAPI/Helper.h"
 using namespace PlayerCc;
 
 class Robot
@@ -13,6 +14,7 @@ class Robot
 	LaserProxy* _lp;
 public:
 	Location* _location;
+	double waypointX, waypointY;
 	Robot(char* ip, int port);
 	void read();
 	void setSpeed(float speed, float angularSpeed);

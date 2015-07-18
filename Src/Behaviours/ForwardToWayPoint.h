@@ -4,9 +4,14 @@
  *  Created on: Jul 17, 2015
  *      Author: colman
  */
-#if 0
+
 #ifndef FORWARDTOWAYPOINT_H_
 #define FORWARDTOWAYPOINT_H_
+
+#include <iostream>
+#include "Behavior.h"
+#include "../RobotAPI/Robot.h"
+#include <math.h>
 
 class ForwardToWayPoint: public Behavior
 {
@@ -20,4 +25,3 @@ public:
 
 #endif /* FORWARDTOWAYPOINT_H_ */
 
-#endif

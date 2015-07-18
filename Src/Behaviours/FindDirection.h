@@ -12,13 +12,13 @@
 #include "../RobotAPI/Robot.h"
 #include "../CoreLib/Cell.h"
 #include "../Utils/PositionUtils.h"
+#include "../RobotAPI/Helper.h"
 
 using namespace CoreLib;
 class FindDirection: public Behavior
 {
-	Location* _from;
-	Location* _to;
-	float _degToWaypoint;
+	//Location* _to;
+	double _degToWaypoint;
 public:
 
 	FindDirection(Robot* robot);

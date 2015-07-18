@@ -4,6 +4,7 @@
 #include "../Plans/Plan.h"
 #include "../Behaviours/Behavior.h"
 #include "../RobotAPI/Robot.h"
+#include "../Utils/PositionUtils.h"
 #include "SlamManager.h"
 
 class Manager
@@ -15,7 +16,7 @@ private:
 	SlamManager* _slamManager;
 	float _laserScan[SCAN_SPAN];
 	int countSlamExe;
-	//double dX, dY, dYaw;
+	double dX, dY, dYaw;
 
 
 public:

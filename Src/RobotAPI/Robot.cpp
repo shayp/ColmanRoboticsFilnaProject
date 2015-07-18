@@ -7,6 +7,8 @@ Robot::Robot(char* ip, int port)
 	_pc = new PlayerClient(ip,port);
 	_pp = new Position2dProxy(_pc);
 	_lp = new LaserProxy(_pc);
+
+	// TODO: Change
 	_location  = new Location(0,0,0);
 	_pp->SetOdometry(0,0,0);
 	while (_pp->GetXPos() != 0 || _pp->GetYPos() != 0 ||_pp->GetYPos() != 0)
@@ -20,11 +22,19 @@ Robot::Robot(char* ip, int port)
 	//Fix the player bug
 	for(i=0;i<15;i++)
 		_pc->Read();
+
+	// TODO: Change
+	this->waypointX = 1;
+	this->waypointY = 0.75;
 }
 
 void Robot::read()
 {
 	_pc->Read();
+	this->_location->setX(this->_pp->GetXPos());
+	this->_location->setY(this->_pp->GetYPos());
+	this->_location->setYaw(this->_pp->GetYaw());
+	this->_location->setYaw(Helper::KeepYawInRange(this->_location->getYaw()));
 }
 
 void Robot::getDelta(double &dX,double &dY,double &dYaw)

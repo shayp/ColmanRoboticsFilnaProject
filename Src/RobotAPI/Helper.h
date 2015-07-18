@@ -5,6 +5,9 @@
 #define DEGREES 270
 #define PI 3.1415926536
 
+#include <math.h>
+#include <iostream>
+
 class Helper
 {
 
@@ -34,6 +37,18 @@ public:
 
 	static double MetersToCentimeters(double meters);
 	static double CentimetersToMeters(double centimeters);
+
+	//Calc the angl between the from to to
+	static double CalcRadToWaypointWithoutYaw(double fromX, double fromY, double toX, double toY);
+
+	//Calc the angle we need to pass for been in straight line to the to point
+	static double CalcRadDeltaToWaypoint(double fromYaw, double toYaw);
+
+	static double KeepYawInRange(double rad);
+	static double SpinSpeedByDeg(double rad);
+
+
+	static double ConvertTo2PI(double rad);
 
 };
 

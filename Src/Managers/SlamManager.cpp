@@ -97,7 +97,7 @@ void SlamManager::UpdateParticles(float delX, float delY, float delTetha,float* 
 //Method which print the best particle
 bool SlamManager::GetLocationByParticles(double &x,double &y,double &yaw) {
 
-	cout << "number of particles: " << particles.size() << endl;
+	//cout << "number of particles: " << particles.size() << endl;
 	// Finds the best particle
 	Particle* pBest = particles[0];
 
@@ -106,7 +106,7 @@ bool SlamManager::GetLocationByParticles(double &x,double &y,double &yaw) {
 			pBest = particles[i];
 		}
 	}
-	cout << "found best particle: "  << endl;
+	//cout << "found best particle: "  << endl;
 	pBest->PrintParticle();
 	if (pBest->pBelief < THRESH_LOW)
 	{

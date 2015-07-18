@@ -48,10 +48,10 @@ void PrintParticles()
 	}
 	for (Particle* printedParticle : particles)
 	{
-		cout << "=============================================" << endl;
-		cout << "Particle " << counter << " :" << endl;
-		printedParticle->PrintParticle();
-		cout << "=============================================" << endl;
+		//cout << "=============================================" << endl;
+		//cout << "Particle " << counter << " :" << endl;
+		//printedParticle->PrintParticle();
+		//cout << "=============================================" << endl;
 		counter++;
 	}
 }

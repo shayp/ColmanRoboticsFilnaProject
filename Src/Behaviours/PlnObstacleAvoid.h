@@ -7,7 +7,6 @@
 #include "../Behaviours/TurnRight.h"
 #include "../Behaviours/TurnInPlace.h"
 #include "../Behaviours/FindDirection.h"
-#include "../Behaviours/ForwardToWayPoint.h"
 
 class PlnObstacleAvoid: public Plan
 {
