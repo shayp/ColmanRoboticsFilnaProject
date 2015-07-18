@@ -15,6 +15,7 @@ Manager::Manager(Robot* robot, Plan* plan) {
 void Manager::run()
 {
 	double x,y,yaw,dX,dY,dYaw;
+	int i;
 	_robot->getDelta(dX,dY,dYaw);
 	cout << "==== The delta:" << endl;
 	cout << dX << "  " << dY << "  " << dYaw << endl << endl;
@@ -44,13 +45,11 @@ void Manager::run()
 		while ((_curr->stopCond()) == false)
 		{
 			_robot->getDelta(dX,dY,dYaw);
-			 for (int i = 0; i < SCAN_SPAN; i++)
-			 _laserScan[i] = _robot->getLaserDistance(i);
+			 for (i = 0; i < SCAN_SPAN; i++)
+				 _laserScan[i] = _robot->getLaserDistance(i);
 			_slamManager->UpdateParticles(dX, dY, dYaw, _laserScan, SCAN_SPAN,_robot->GetLaserProxy());
 			_slamManager->GetLocationByParticles(x,y,yaw);
-			cout<< "before error" << endl;
 			_robot->UpdateLocation(x,y,yaw);//, true);
-			cout<< "after error" << endl;
 			_curr->action();
 			_robot->read();
 			//cout << "while is true" << endl;

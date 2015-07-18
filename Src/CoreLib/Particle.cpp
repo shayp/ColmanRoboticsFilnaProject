@@ -17,17 +17,17 @@ using namespace CoreLib;
 using namespace PlayerCc;
 //Constructors of objects type of Particle
 Particle::Particle(float x, float y, float yaw, float belief){
-	cout << "beginning ctor" << endl;
-	cout << x << "    " << y << "     " << yaw << "    " << belief;
+	//cout << "beginning ctor" << endl;
+	//cout << x << "    " << y << "     " << yaw << "    " << belief;
 	pX = x;
 	pY = y;
 	pYaw = yaw;
 	pBelief = belief;
-	cout << "ending ctor" << endl;
+	//cout << "ending ctor" << endl;
 }
 
 //Method which handles the particle position update
-void Particle::UpdateParticle(float delX, float delY, float delYaw, float laserScan[], int laserCount,LaserProxy* lp) {
+void Particle::UpdateParticle(float delX, float delY, float delYaw, float* laserScan, int laserCount,LaserProxy* lp) {
 	cout << " THE COORDINATES BEFORE ADDING DELTA:" << endl;
 	cout << pX << "  " << pY << "  " << pYaw << endl;
 	// moving the particle with the same estimated vector that the robot itself moved
@@ -43,11 +43,15 @@ void Particle::UpdateParticle(float delX, float delY, float delYaw, float laserS
 }
 
 //Method which calculate the particle's probability by map
-float Particle::ProbUpdateMapByScan(float laserScan[], int laserCount,LaserProxy* lp) {
+float Particle::ProbUpdateMapByScan(float* laserScan, int laserCount,LaserProxy* lp) {
+	Cell* CheckedCell;
 	float xObj,yObj;
 	int mismatch = 0;
 	int match = 0;
 	int i,j;
+	unsigned X;
+	unsigned Y;
+
 	for (i=0; i<laserCount;i++)
 	{
 		//INDEX_PER_DEGREE) {
@@ -64,10 +68,11 @@ float Particle::ProbUpdateMapByScan(float laserScan[], int laserCount,LaserProxy
 				//yObj = (j * sin(DTOR(ConverteIndexToAngle(i,laserCount,LASER_ANGLE_RANGE)) + pYaw)) + pY;
 				//cout << "before anything: x=" << pX << "   y:" << pY << "     yaw=" <<pYaw << endl;
 				//cout << "numbers before RobotRelativeXPosToPixelXCoord: X=" << yObj << "    Y=" <<  xObj << endl;
-				unsigned X = CordinateConvert::RobotRelativeYPosToPixelYCoord(yObj, 10, SimManager::GetInstance()->m_Map->getCols());
-				unsigned Y = CordinateConvert::RobotRelativeXPosToPixelXCoord(xObj, 10, SimManager::GetInstance()->m_Map->getRows());
+				X = CordinateConvert::RobotRelativeYPosToPixelYCoord(yObj, 10, SimManager::GetInstance()->m_Map->getCols());
+				Y = CordinateConvert::RobotRelativeXPosToPixelXCoord(xObj, 10, SimManager::GetInstance()->m_Map->getRows());
 				//cout << "new numbers after RobotRelativeXPosToPixelXCoord: X=" << Y << "    Y=" <<  X << endl;
-				if(SimManager::GetInstance()->m_Map->getCell(Y, X)->isCellWalkable()) // the cell is open (like the laser detects)
+				CheckedCell = SimManager::GetInstance()->m_Map->getCell(Y, X);
+				if(CheckedCell != NULL && CheckedCell->isCellWalkable()) // the cell is open (like the laser detects)
 				 {
 					match++;
 					//cout << "match!" << endl;
@@ -104,8 +109,8 @@ float Particle::ProbUpdateMapByScan(float laserScan[], int laserCount,LaserProxy
 	else
 	{
 		float newBel = (float)(match)/(mismatch + match);
-		//cout << "matched:" << match << "	" << "mismatch: " << mismatch << endl;
-		//cout << "new belief:" << newBel << endl;
+		cout << "matched:" << match << "	" << "mismatch: " << mismatch << endl;
+		cout << "new belief:" << newBel << endl;
 		return newBel;
 	}
 
@@ -159,4 +164,9 @@ float Particle::ConverteIndexToAngle(int index, int x, int radius) {
 
 //Destructor of objects type of Particle
 Particle::~Particle() {
+	pX = NULL;
+	pY = NULL;
+	pYaw = NULL;
+	pBelief = NULL;
+
 }

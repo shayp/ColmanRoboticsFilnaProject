@@ -43,7 +43,7 @@ namespace CoreLib
 		Particle(float x, float y, float yaw, float belief);
 
 		//Method which handles the particle position update
-		void UpdateParticle(float delX, float delY, float delYaw, float laserScan[], int laserCount, LaserProxy* lp);
+		void UpdateParticle(float delX, float delY, float delYaw, float* laserScan, int laserCount, LaserProxy* lp);
 
 		//Method which calculate the particle's probability by map
 		float ProbUpdateMapByScan(float laserScan[], int laserCount,LaserProxy* lp);

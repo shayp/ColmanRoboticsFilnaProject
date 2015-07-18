@@ -18,7 +18,7 @@ using namespace PlayerCc;
 #define RADIUS 0.1
 using namespace CoreLib;
 
-typedef vector <Particle> particlesVec;
+typedef vector <Particle*> particlesVec;
 
 //Class which controls all aspects following the slam system control
 class SlamManager {
@@ -33,28 +33,28 @@ public:
 	void InitParticles(float xRobot,float yRobot,float yawRobot);
 
 	//Method that updates all the particles in the vector
-	void UpdateParticles(float delX, float delY, float delTetha,float laserScan[], int laserCount,LaserProxy* lp);
+	void UpdateParticles(float delX, float delY, float delTetha,float* laserScan, int laserCount,LaserProxy* lp);
 
 	//Method that returns the location of the robot by the slam system.
 	bool GetLocationByParticles(double &x,double &y,double &yaw);
 
 	//for debug
-	void PrintParticles() {
-		particlesVec::iterator pCurr = particles.begin();
-		particlesVec::iterator pEnd = particles.end();
-		int counter = 0;
-		if (particles.size() == 0){
-			cout << "0 PARTICLES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-			exit(1);
-		}
-				for (; counter < particles.size(); pCurr++) {
-					cout << "=============================================" << endl;
-					cout << "Particle " << counter << " :" << endl;
-					pCurr->PrintParticle();
-					cout << "=============================================" << endl;
-					counter++;
-				}
-			}
+void PrintParticles()
+{
+	int counter = 0;
+	if (particles.size() == 0)
+	{
+		cout << "0 PARTICLES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+	}
+	for (Particle* printedParticle : particles)
+	{
+		cout << "=============================================" << endl;
+		cout << "Particle " << counter << " :" << endl;
+		printedParticle->PrintParticle();
+		cout << "=============================================" << endl;
+		counter++;
+	}
+}
 
 	//Destructor of objects type of SlamManager
 	virtual ~SlamManager();
