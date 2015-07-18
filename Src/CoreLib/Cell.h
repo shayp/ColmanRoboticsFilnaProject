@@ -15,7 +15,7 @@ namespace CoreLib
 	{
 		public:
 			#define COST_OBSTICALE 			DBL_MAX
-			#define COST_FREE_TO_GO 		0
+			#define COST_FREE_TO_GO 		1
 			#define COST_SECOND_LEVEL 		DBL_MAX/ 2 + 1
 			#define COST_NEAR_WALL			DBL_MAX / 2
 			#define COST_NEAR_WALL_SECOND	 DBL_MAX /3
