@@ -22,10 +22,6 @@ Robot::Robot(char* ip, int port)
 	//Fix the player bug
 	for(i=0;i<15;i++)
 		_pc->Read();
-
-	// TODO: Change
-	this->waypointX = 1;
-	this->waypointY = 0.75;
 }
 
 void Robot::read()

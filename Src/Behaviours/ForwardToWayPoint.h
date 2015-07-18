@@ -16,6 +16,7 @@
 class ForwardToWayPoint: public Behavior
 {
 public:
+	static int WayPointIndex;
 	ForwardToWayPoint(Robot* robot);
 	bool startCond();
 	bool stopCond();
