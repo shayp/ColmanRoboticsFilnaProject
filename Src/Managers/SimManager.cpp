@@ -129,6 +129,6 @@ vector<Location*> SimManager::GetAllWayPoints()
 		cout << "Robot X Cord: "<< newWayPoint->getX() << "Robot Y Cord: "<< newWayPoint->getY() << endl;
 		SimulatrionWayPointLocations.push_back(newWayPoint);
 	}
+	SimulatrionWayPointLocations[0]->setYaw(m_Config->getRobotStartLocation().Yaw);
 	return SimulatrionWayPointLocations;
 }
-

@@ -2,18 +2,18 @@
 #include "../Utils/PositionUtils.h"
 
 using namespace Utils;
-Robot::Robot(char* ip, int port)
+Robot::Robot(char* ip, int port, Location* startLocation)
 {
 	_pc = new PlayerClient(ip,port);
 	_pp = new Position2dProxy(_pc);
 	_lp = new LaserProxy(_pc);
 
 	// TODO: Change
-	_location  = new Location(0,0,0);
-	_pp->SetOdometry(0,0,0);
+	_location  = new Location(startLocation->getX(),startLocation->getY(),startLocation->getYaw());
+	_pp->SetOdometry(startLocation->getX(),startLocation->getY(),startLocation->getYaw());
 	while (_pp->GetXPos() != 0 || _pp->GetYPos() != 0 ||_pp->GetYPos() != 0)
 	{
-		_pp->SetOdometry(0,0,0);
+		_pc->Read();
 	}
 
 	_pp->SetMotorEnable(true);

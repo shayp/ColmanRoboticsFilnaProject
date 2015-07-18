@@ -224,6 +224,16 @@ void MapUtils::addMapWeights(Map* map)
 		}
 	}
 
+
+	for (unsigned row = 0; row < map->getRows(); row++)
+	{
+		for (unsigned col = 0; col < map->getCols(); col++)
+		{
+			Cell* cell = (*map)(row, col);
+			SetSecondLevel(cell);
+		}
+	}
+
 	for (unsigned row = 0; row < map->getRows(); row++)
 	{
 		for (unsigned col = 0; col < map->getCols(); col++)
@@ -254,9 +264,9 @@ void MapUtils::SetSecondLevel(Cell* cell)
 	{
 		if (neighborCell != NULL &&
 			cell->Cost == COST_FREE_TO_GO
-			&& neighborCell->Cost > COST_SECOND_LEVEL)
+			&& neighborCell->Cost >= COST_NEAR_WALL_THIRD)
 		{
-			cell->Cost = COST_SECOND_LEVEL;
+			cell->Cost = 1;
 		}
 	}
 }

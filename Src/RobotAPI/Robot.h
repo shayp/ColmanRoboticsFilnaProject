@@ -15,7 +15,7 @@ class Robot
 public:
 	Location* _location;
 	double waypointX, waypointY;
-	Robot(char* ip, int port);
+	Robot(char* ip, int port, Location* startLocation);
 	void read();
 	void setSpeed(float speed, float angularSpeed);
 	void getDelta(double &dX,double &dY,double &dYaw);

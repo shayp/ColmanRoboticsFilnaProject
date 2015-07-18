@@ -16,10 +16,10 @@ namespace CoreLib
 		public:
 			#define COST_OBSTICALE 			DBL_MAX
 			#define COST_FREE_TO_GO 		0
-			#define COST_SECOND_LEVEL 		4
-			#define COST_NEAR_WALL			7
-			#define COST_NEAR_WALL_SECOND	6
-			#define COST_NEAR_WALL_THIRD	5
+			#define COST_SECOND_LEVEL 		DBL_MAX/ 2 + 1
+			#define COST_NEAR_WALL			DBL_MAX / 2
+			#define COST_NEAR_WALL_SECOND	 DBL_MAX /3
+			#define COST_NEAR_WALL_THIRD	 DBL_MAX / 4
 			#define NUM_OF_NEIGHBORS	8
 
 			double Cost;

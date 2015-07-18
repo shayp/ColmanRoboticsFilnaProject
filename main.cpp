@@ -15,7 +15,8 @@ int main(int argc, char** argv)
 	SimManager::GetInstance()->Init(CPG_FILE_PATH);
 	SimManager::GetInstance()->run();
 	SimManager::GetInstance()->GetAllWayPoints();
-	Robot robot("localhost",6665);
+	Location* startLocation = SimManager::GetInstance()->GetAllWayPoints()[0];
+	Robot robot("localhost",6665, startLocation);
 	PlnObstacleAvoid pln(&robot);
 	Manager m(&robot,&pln);
 	m.run();
