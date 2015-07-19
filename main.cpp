@@ -4,7 +4,7 @@
 #include "Src/Managers/SimManager.h"
 #include "Src/Managers/Manager.h"
 #include "Src/Utils/PositionUtils.h"
-#define SIMULATOR_ROBOT		1
+//#define SIMULATOR_ROBOT		1
 const char* CPG_FILE_PATH =  "parameters.txt";
 
 using namespace std;

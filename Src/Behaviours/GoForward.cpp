@@ -12,7 +12,7 @@ bool GoForward::startCond()
 
 void GoForward::action()
 {
-	_robot->setSpeed(1, 0.0);
+	_robot->setSpeed(0.12, 0.0);
 }
 
 bool GoForward::stopCond()

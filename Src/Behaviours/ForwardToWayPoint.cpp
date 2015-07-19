@@ -70,7 +70,7 @@ bool ForwardToWayPoint::stopCond()
 void ForwardToWayPoint::action()
 {
 	cout << "ForwardToWayPoint action started" << endl;
-	_robot->setSpeed(0.4, 0.0);
+	_robot->setSpeed(0.12, 0.0);
 
 }
 
