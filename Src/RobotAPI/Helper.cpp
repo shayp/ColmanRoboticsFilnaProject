@@ -125,14 +125,26 @@ double Helper::CentimetersToMeters(double centimeters)
 	 return deltaRad;
  }
 
-	double Helper::ConvertTo2PI(double rad)
-	{
-		if(rad<0)
-		{
-			return rad*(-1) + PI;
-		}
-		else return rad*180/PI;
-	}
+ double Helper::ConvertTo2PI(double rad)
+  {
+
+ 	 double deg = rad*180/PI;
+
+ 	 if(rad<0)
+ 	 {
+ 		 deg = deg * (-1);
+ 		 if(deg<90)
+ 		 {
+ 			 deg+=270;
+ 		 }
+ 		 else
+ 		 {
+ 			 deg+=180;
+ 		 }
+
+ 	 }
+ 	 return deg;
+ }
 
 	double Helper::SpinSpeedByDeg(double rad)
 	{

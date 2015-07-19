@@ -10,18 +10,17 @@ Robot::Robot(char* ip, int port, Location* startLocation)
 
 	// TODO: Change
 	_location  = new Location(startLocation->getX(),startLocation->getY(),startLocation->getYaw());
-	_pp->SetOdometry(startLocation->getX(),startLocation->getY(),startLocation->getYaw());
-	while (_pp->GetXPos() != 0 || _pp->GetYPos() != 0 ||_pp->GetYPos() != 0)
-	{
-		_pc->Read();
-	}
 
-	_pp->SetMotorEnable(true);
 	int i;
 
 	//Fix the player bug
 	for(i=0;i<15;i++)
+	{
+		_pp->SetOdometry(startLocation->getX(),startLocation->getY(),startLocation->getYaw());
 		_pc->Read();
+	}
+
+	_pp->SetMotorEnable(true);
 }
 
 void Robot::read()

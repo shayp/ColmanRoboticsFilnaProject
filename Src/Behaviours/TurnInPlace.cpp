@@ -27,7 +27,7 @@ bool TurnInPlace::stopCond()
 
 void TurnInPlace::action()
 {
-	_robot->setSpeed(0.0,1.0);
+	_robot->setSpeed(0.0,0.2);
 }
 
 TurnInPlace::~TurnInPlace()
