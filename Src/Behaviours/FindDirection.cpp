@@ -22,10 +22,20 @@ FindDirection::FindDirection(Robot* robot) : Behavior(robot)
 
 bool FindDirection::startCond()
 {
+	for (int i= Helper::DegreesToIndex(-30) ; i < Helper::DegreesToIndex(30) ; i++)
+	{
+		//cout << "forward dist: "<< _robot->getLaserDistance(i) << " , " << i << endl;
+		if (_robot->getLaserDistance(i) < Helper::MINIMUM_WALL_RANGE)
+		{
+			cout << "FindDirection DIDN'T started" << endl;
+
+			return false;
+		}
+	}
+
 
 	cout << "FindDirection start condition started" << endl;
-	double temp = Helper::CalcRadToWaypointWithoutYaw(this->_robot->_location->getX(),this->_robot->_location->getY(),this->_robot->waypointX,this->_robot->waypointY);
-	this->_degToWaypoint = Helper::CalcRadDeltaToWaypoint(this->_robot->_location->getYaw(),temp);
+	this->_degToWaypoint = Helper::CalcRadDeltaToWaypoint(this->_robot->_location->getX(),this->_robot->_location->getY(),this->_robot->waypointX,this->_robot->waypointY, this->_robot->_location->getYaw());
 	this->_degToWaypoint= this->_degToWaypoint*180/M_PI;
 
 	return true;
@@ -33,11 +43,7 @@ bool FindDirection::startCond()
 
 void FindDirection::action()
 {
-	double radToDestPoint = Helper::CalcRadToWaypointWithoutYaw(this->_robot->_location->getX(),this->_robot->_location->getY(),this->_robot->waypointX,this->_robot->waypointY);
-
-	cout << "Robot yaw aprox: " << _robot->_location->getYaw() << " Rads to dest:" << radToDestPoint << endl;
-	double deltaYaw = Helper::CalcRadDeltaToWaypoint(this->_robot->_location->getYaw(),radToDestPoint);
-
+	double deltaYaw = Helper::CalcRadDeltaToWaypoint(this->_robot->_location->getX(),this->_robot->_location->getY(),this->_robot->waypointX,this->_robot->waypointY, this->_robot->_location->getYaw());
 
 	//Fix Bug
 		//float robotDegreeTemp = (PositionUtils::CalcGradientAngleOffset(*_from,*_to,_robot->_location->getYaw()))*180/M_PI;
@@ -50,7 +56,15 @@ void FindDirection::action()
 		cout << " New deg to waypoint: " << this->_degToWaypoint << endl;
 			//Update the spin speed
 		cout << "the DELTA: " << deltaYaw << endl;
-		this->_robot->setSpeed(0,0.2);
+
+		if (Helper::SpinSpeedByDeg(deltaYaw) > 0)
+		{
+			this->_robot->setSpeed(0,0.2);
+		}
+		else
+		{
+			this->_robot->setSpeed(0,-0.2);
+		}
 
 		//this->_robot->setSpeed(0,Helper::SpinSpeedByDeg(deltaYaw));
 //}
@@ -59,7 +73,7 @@ void FindDirection::action()
 bool FindDirection::stopCond()
 {
 
-	if ((this->_degToWaypoint>0 && this->_degToWaypoint<2) || (this->_degToWaypoint>358 && this->_degToWaypoint<360))
+	if ((this->_degToWaypoint>0 && this->_degToWaypoint<2) || (this->_degToWaypoint>-2 && this->_degToWaypoint<0))
 	{
 		cout << "FindDirection stop condition started" << endl;
 		_robot->setSpeed(0.0, 0.0);

@@ -39,7 +39,7 @@ void SlamManager::UpdateParticles(float delX, float delY, float delTetha,
 		cout << "There are no more particles, bye bye!" << endl;
 		exit(1);
 	}
-	cout << "** particle size before update ** " << particles.size() << endl;
+	//cout << "** particle size before update ** " << particles.size() << endl;
 	for (Particle* pCurrent : particles) {
 		pCurrent->UpdateParticle(delX, delY, delTetha, laserScan, laserCount,
 				lp);
@@ -79,7 +79,7 @@ void SlamManager::UpdateParticles(float delX, float delY, float delTetha,
 		childsToAdd.clear();
 	}
 
-	cout << "** particle size after update ** " << particles.size() << endl;
+	//cout << "** particle size after update ** " << particles.size() << endl;
 }
 
 //Method which print the best particle
@@ -94,8 +94,8 @@ bool SlamManager::GetLocationByParticles(double &x, double &y, double &yaw) {
 			pBest = particles[i];
 		}
 	}
-	cout << "found best particle: " << endl;
-	pBest->PrintParticle();
+	//cout << "found best particle: " << endl;
+	//pBest->PrintParticle();
 
 	if (pBest->pBelief < THRESH_LOW) {
 		return false;

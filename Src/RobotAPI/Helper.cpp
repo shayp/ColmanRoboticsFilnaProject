@@ -83,47 +83,48 @@ double Helper::CentimetersToMeters(double centimeters)
 
 
  //Calc the angle we need to pass for been in straight line to the to point
- double Helper::CalcRadDeltaToWaypoint(double fromYaw, double toYaw)
- {
-	 //cout << "#### In the calc #####" << endl;
-	 //cout << "from yaw: " << fromYaw << " to yaw: " << toYaw << endl;
-	 double deltaRad;
-	 if(toYaw>PI)
-	 {
-		 //
-		 if(fromYaw > 0)
-		 {
-			 deltaRad = toYaw - fromYaw;
-		 }
-		 else
-		 {
-			 deltaRad = toYaw - fromYaw -2*PI;
-		 }
+  double Helper::CalcRadDeltaToWaypoint(double fromX, double fromY, double toX, double toY,  double fromYaw)
+  {
+ 	 double toYaw = Helper::CalcRadToWaypointWithoutYaw(fromX, fromY, toX, toY);
+ 	 //cout << "#### In the calc #####" << endl;
+ 	 //cout << "from yaw: " << fromYaw << " to yaw: " << toYaw << endl;
+ 	 double deltaRad;
+ 	 if(toYaw>PI)
+ 	 {
+ 		 //
+ 		 if(fromYaw > 0)
+ 		 {
+ 			 deltaRad = toYaw - fromYaw;
+ 		 }
+ 		 else
+ 		 {
+ 			 deltaRad = toYaw - fromYaw -2*PI;
+ 		 }
 
-	 }
-	 else
-	 {
-		 if(fromYaw > 0)
-		 {
-			 deltaRad = toYaw - fromYaw;
-		 }
-		 else
-		 {
-			deltaRad =  toYaw-fromYaw-2*PI;
-			//cout << "MY DELTA:: " <<deltaRad << endl;
-		 }
-	 }
-	 if(deltaRad<-PI)
-	 {
-		 deltaRad = deltaRad + 2*PI;
-		 //cout << "AFTER FIX = " << deltaRad << endl;
-	 }
-	 else if(deltaRad>PI)
-	 {
-		 deltaRad = deltaRad - 2*PI;
-	 }
-	 return deltaRad;
- }
+ 	 }
+ 	 else
+ 	 {
+ 		 if(fromYaw > 0)
+ 		 {
+ 			 deltaRad = toYaw - fromYaw;
+ 		 }
+ 		 else
+ 		 {
+ 			deltaRad =  toYaw-fromYaw-2*PI;
+ 			//cout << "MY DELTA:: " <<deltaRad << endl;
+ 		 }
+ 	 }
+ 	 if(deltaRad<-PI)
+ 	 {
+ 		 deltaRad = deltaRad + 2*PI;
+ 		 //cout << "AFTER FIX = " << deltaRad << endl;
+ 	 }
+ 	 else if(deltaRad>PI)
+ 	 {
+ 		 deltaRad = deltaRad - 2*PI;
+ 	 }
+ 	 return deltaRad;
+  }
 
  double Helper::ConvertTo2PI(double rad)
   {

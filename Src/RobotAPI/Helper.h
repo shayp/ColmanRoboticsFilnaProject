@@ -14,7 +14,7 @@ class Helper
 public:
 	static constexpr float MINIMUM_WALL_RANGE_SIDES = 0.6;
 	static constexpr float MINIMUM_WALL_RANGE_FORWARD = 1;
-	static constexpr float MINIMUM_WALL_RANGE = 0.8;
+	static constexpr float MINIMUM_WALL_RANGE = 0.5;
 	static constexpr float TOTAL_SCAN_SPAN = SCAN_SPAN;
 	static constexpr float HALF_SCAN_SPAN = SCAN_SPAN / 2;
 	static constexpr float TOTAL_DEGREES = DEGREES;
@@ -42,7 +42,7 @@ public:
 	static double CalcRadToWaypointWithoutYaw(double fromX, double fromY, double toX, double toY);
 
 	//Calc the angle we need to pass for been in straight line to the to point
-	static double CalcRadDeltaToWaypoint(double fromYaw, double toYaw);
+	static double CalcRadDeltaToWaypoint(double fromX, double fromY, double toX, double toY, double fromYaw);
 
 	static double KeepYawInRange(double rad);
 	static double SpinSpeedByDeg(double rad);

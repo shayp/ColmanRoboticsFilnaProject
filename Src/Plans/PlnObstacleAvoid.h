@@ -8,6 +8,11 @@
 #include "../Behaviours/TurnInPlace.h"
 #include "../Behaviours/FindDirection.h"
 #include "../Behaviours/ForwardToWayPoint.h"
+#include "../Behaviours/AvoidTurnInPlace.h"
+#include "../Behaviours/AvoidForward.h"
+#include "../Behaviours/AvoidSwitchDirection.h"
+
+
 
 class PlnObstacleAvoid: public Plan
 {

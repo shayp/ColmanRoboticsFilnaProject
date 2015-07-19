@@ -38,7 +38,7 @@ bool ForwardToWayPoint::stopCond()
 	{
 
 		ForwardToWayPoint::WayPointIndex++;
-		if (ForwardToWayPoint::WayPointIndex > SimManager::GetInstance()->GetAllWayPoints().size())
+		if (ForwardToWayPoint::WayPointIndex >= SimManager::GetInstance()->GetAllWayPoints().size())
 		{
 			cout << "We Got to the last way point BYE BYE Mrs american pie" << endl;
 			exit(1);
