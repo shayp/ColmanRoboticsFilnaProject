@@ -26,14 +26,15 @@ Robot::Robot(char* ip, int port, Location* startLocation)
 void Robot::read()
 {
 	_pc->Read();
-	this->_location->setX(this->_pp->GetXPos());
+	/*this->_location->setX(this->_pp->GetXPos());
 	this->_location->setY(this->_pp->GetYPos());
 	this->_location->setYaw(this->_pp->GetYaw());
-	this->_location->setYaw(Helper::KeepYawInRange(this->_location->getYaw()));
+	this->_location->setYaw(Helper::KeepYawInRange(this->_location->getYaw()));*/
 }
 
 void Robot::getDelta(double &dX,double &dY,double &dYaw)
 {
+	_pc->Read();
 	dX = _pp->GetXPos() - _location->getX();
 	dY = _pp->GetYPos() - _location->getY();
 	dYaw = _pp->GetYaw() - _location->getYaw();
@@ -41,18 +42,17 @@ void Robot::getDelta(double &dX,double &dY,double &dYaw)
 	//_location->setX(dX+ _location->getX());
 	//_location->setY(dY+ _location->getY());
 
-	PositionUtils::FixRad(dYaw);
+	// TODO: Was removed in order to check particle
+	//PositionUtils::FixRad(dYaw);
+	Helper::KeepYawInRange(dYaw);
 }
 void Robot::UpdateLocation(double x, double y, double yaw)//, bool isSetOdo)
 {
-	/*if (isSetOdo)
-	{
-		while (_pp->GetXPos() != x || _pp->GetYPos() != y ||_pp->GetYPos() != yaw)
-		{
-			_pp->SetOdometry(x,y,yaw);
-		}
-	}*/
-	//_pp->SetOdometry(x,y,yaw);
+	this->_location->setX(x);
+	this->_location->setY(y);
+	this->_location->setYaw(yaw);
+	this->_location->setYaw(Helper::KeepYawInRange(this->_location->getYaw()));
+
 }
 void Robot::setSpeed(float speed, float angularSpeed)
 {

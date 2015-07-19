@@ -12,10 +12,10 @@
 #include <libplayerc++/playerc++.h>
 using namespace PlayerCc;
 
-#define PART_COUNT 50
-#define THRESH_LOW 0.5
+#define PART_COUNT 200
+#define THRESH_LOW 0.3
 #define THRESH_HIGH 0.8
-#define RADIUS 0.1
+#define RADIUS 0.05
 using namespace CoreLib;
 
 typedef vector <Particle*> particlesVec;

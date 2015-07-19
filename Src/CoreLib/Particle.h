@@ -10,7 +10,7 @@
 #define MAX_ACCURATE_ANGLE_TO_MOVE 1.0
 #define NORMAL_ACCURATE_ANGLE_TO_MOVE 0.5
 #define SAFE_DISTANCE_TO_MOVE 0.3
-#define NORMALIZEDFACTOR 2
+#define NORMALIZEDFACTOR 1.1
 #define LASER_MAX_RANGE 4.095
 #define LASER_ANGLE_RANGE 240
 #define OPEN_PATH_RANGE 0.75
@@ -26,52 +26,62 @@
 #define MAX_DEGREE 360
 
 #include <libplayerc++/playerc++.h>
+#include "../RobotAPI/Helper.h"
 using namespace PlayerCc;
 using namespace std;
 
-namespace CoreLib
-{
-	//Class which controls all aspects following the particle's system control
-	class Particle {
-	public:
-		double pX;
-		double pY;
-		double pYaw;
-		double pBelief;
+namespace CoreLib {
+//Class which controls all aspects following the particle's system control
+class Particle {
+public:
+	double pX;
+	double pY;
+	double pYaw;
+	double pBelief;
 
-		//Constructors of objects type of Particle
-		Particle(float x, float y, float yaw, float belief);
+	//Constructors of objects type of Particle
+	Particle(float x, float y, float yaw, float belief);
 
-		//Method which handles the particle position update
-		void UpdateParticle(float delX, float delY, float delYaw, float* laserScan, int laserCount, LaserProxy* lp);
+	//Method which handles the particle position update
+	void UpdateParticle(float delX, float delY, float delYaw, float* laserScan,
+			int laserCount, LaserProxy* lp);
 
-		//Method which calculate the particle's probability by map
-		float ProbUpdateMapByScan(float laserScan[], int laserCount,LaserProxy* lp);
+	//Method which calculate the particle's probability by map
+	float ProbUpdateByScan(float laserScan[], int laserCount, LaserProxy* lp);
 
-		//Method which calculate the particle's probability
-		float ProbCalc(float delX, float delY, float delTetha);
+	void SetBelief(double bel) {
+		if (bel > 1)
+			pBelief = 1;
+		else if (bel < 0)
+			pBelief = 0;
+		else
+			pBelief = bel;
+	}
 
-		double GetBelief();
+	void SetYaw(double yaw) {
+		pYaw = yaw;
+		Helper::KeepYawInRange(pYaw);
+	}
 
-		double GetX();
+	double GetBelief();
 
-		double GetY();
+	double GetX();
 
-		double GetYaw();
+	double GetY();
 
-		//Method which converts laser index to angle
-		float ConverteIndexToAngle(int index, int x, int radius);
+	double GetYaw();
 
-		// Destructor of objects type of Particle
-		~Particle();
+	//Method which converts laser index to angle
+	float ConverteIndexToAngle(int index, int x, int radius);
 
-		// for debugging.
-		void PrintParticle()
-		{
-			cout << "x: " << pX << "      y: " << pY << "     yaw: " << pYaw << "    " <<
-					"belief: " << pBelief << endl;
-		}
+	// Destructor of objects type of Particle
+	~Particle();
 
-	};
+	// for debugging.
+	void PrintParticle() {
+		cout << "x: " << pX << "      y: " << pY << "     yaw: " << pYaw
+				<< "    " << "belief: " << pBelief << endl;
+	}
+};
 }
 #endif /* PARTICLE_H_ */
